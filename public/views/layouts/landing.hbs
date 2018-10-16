@@ -149,6 +149,9 @@
                         var imgData = canvas.toDataURL();
                         console.log(imgData);
 
+                        $.post('/screens/save', {base64: imgData}, (data) => {
+                            console.log(data);
+                        })
                     }
                 });
             }, false);

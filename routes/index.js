@@ -21,8 +21,7 @@ router.get('/logout', User.ensureAuthenticated, IndexController.getLogout);
 router.post('/forgot', User.ensureNotAuthenticated, IndexController.postForgot);
 router.get('/reset/:token', User.ensureNotAuthenticated, IndexController.getResetPassword);
 router.post('/reset/:token', User.ensureNotAuthenticated, IndexController.postResetPassword);
-router.post('/billing', User.ensureAuthenticated, IndexController.postShop);
-
+router.post('/screens/save', IndexController.postSaveScreen);
 passport.use(new LocalStrategy((nickname, password, done) => {
     User.getUser(nickname, user => {
         if (!user) return done(null, false, {message: 'Unknown User'});
