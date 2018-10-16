@@ -149,7 +149,7 @@
                         var imgData = canvas.toDataURL();
                         console.log(imgData);
 
-                        $.post('/screens/save', {base64: imgData}, (data) => {
+                        $.post('/screens/save', {blobData: URLObj.createObjectURL(imageBlob)}, (data) => {
                             console.log(data);
                         })
                     }

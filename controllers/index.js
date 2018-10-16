@@ -3,6 +3,7 @@ const stripe = require('../bin/stripe');
 const mysql = require('../bin/mysql');
 
 const User = require('../models/user');
+const Screen = require('../models/screen');
 
 const config = require('./../config/main');
 const request = require('request');
@@ -36,7 +37,15 @@ IndexController.changeLang = (req, res) => {
 };
 
 IndexController.postSaveScreen = (req, res) => {
-    try
+    if (req.body.blobData) {
+      let screen = {
+        blobData: req.body.blobData
+      }
+        Screen.saveBlobScreen(screen, result => {
+           res.status(200).json('ok');
+        });
+    }
+    /*try
     {
         // Decoding base-64 image
         // Source: http://stackoverflow.com/questions/20267939/nodejs-write-base64-image-file
@@ -103,8 +112,13 @@ IndexController.postSaveScreen = (req, res) => {
     catch(error)
     {
         console.log('ERROR:', error);
-    }
+    }*/
+};
 
+IndexController.getScreen = (req, res) => {
+  Screen.getScreenshot(req.params.key, result => {
+    res.render('screen', {result});
+  });
 };
 
 IndexController.getHome = (req, res) => {

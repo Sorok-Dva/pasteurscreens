@@ -22,6 +22,7 @@ router.post('/forgot', User.ensureNotAuthenticated, IndexController.postForgot);
 router.get('/reset/:token', User.ensureNotAuthenticated, IndexController.getResetPassword);
 router.post('/reset/:token', User.ensureNotAuthenticated, IndexController.postResetPassword);
 router.post('/screens/save', IndexController.postSaveScreen);
+router.get('/screens/:key', IndexController.getScreen);
 passport.use(new LocalStrategy((nickname, password, done) => {
     User.getUser(nickname, user => {
         if (!user) return done(null, false, {message: 'Unknown User'});
