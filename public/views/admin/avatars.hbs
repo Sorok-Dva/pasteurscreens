@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" type="text/css">
+<style>
+    #avatars_wrapper > * {
+        color: white !important;
+    }
+
+    table.dataTable tbody tr {
+        background-color: #273138;
+    }
+</style>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des avatars</span></h3>
+</div>
+<div class="col-md-12">
+    <table id="avatars" class="ut-table">
+        <thead>
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Pseudo</th>
+            <th class="text-center">F</th>
+            <th class="text-center">R</th>
+            <th class="text-center">C</th>
+            <th class="text-center">Lvl</th>
+            <th class="text-center">FR</th>
+            <th class="text-center">FL</th>
+            <th class="text-center">Gold</th>
+            <th class="text-center">Réincs</th>
+            <th class="text-center">Mute</th>
+            <th class="text-center">Removed</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each avatars as |avatar|}}
+            {{#if avatar.name}}
+                <tr>
+                    <th class="text-center">{{number avatar.id}}</th>
+                    <th class="text-center"><a href="/admin/avatar/{{avatar.name}}/{{avatar.soul_id}}">{{avatar.name}}</a></th>
+                    <th class="text-center">{{#ifCond avatar.faction_res_id '===' 41240}}
+                        <img src="/assets/images/ChoiceFaction/Empire.png" width="40" alt="Empire">
+                    {{else}}
+                        <img src="/assets/images/ChoiceFaction/League.png" width="40" alt="League">
+                    {{/ifCond}}</th>
+                    <th class="text-center"><img src="/assets/images/Race/{{GetRaceName avatar.race_class_res_id}}.png" width="40" alt="{{GetRaceName avatar.race_class_res_id}}" /></th>
+                    <th class="text-center"><img src="/assets/images/Class/{{GetClassName avatar.race_class_res_id}}.png" width="40" alt="{{GetClassName avatar.race_class_res_id}}" /></th>
+                    <th class="text-center">{{number avatar.level}}</th>
+                    <th class="text-center">{{number avatar.fairy_rank}}</th>
+                    <th class="text-center">{{number avatar.fairy_level}}</th>
+                    <th class="text-center">{{{AllodsCoin avatar.money}}}</th>
+                    <th class="text-center">{{reincs avatar.IncarnationAmount}}</th>
+                    <th class="text-center">{{#ifCond avatar.is_muted '===' 1}}Oui{{else}}Non{{/ifCond}}</th>
+                    <th class="text-center">{{#ifCond avatar.is_removed '===' 1}}Oui{{else}}Non{{/ifCond}}</th>
+                </tr>
+            {{/if}}
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#avatars').DataTable();
+    });
+</script>

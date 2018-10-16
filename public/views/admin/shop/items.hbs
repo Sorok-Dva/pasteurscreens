@@ -1,0 +1,54 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Boutique</a>
+    </li>
+    <li class="breadcrumb-item active">Produits</li>
+</ol>
+<form method="post" action="/admin/shop/items">
+    {{#if errors}}
+        <div class="alert alert-danger">
+            {{#each errors}}
+                {{msg}}
+            {{/each}}
+        </div>
+    {{/if}}
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="name">Nom du produit</label>
+        <div class="col-md-4">
+            <input id="name" name="name" type="text" placeholder="Un nom pour cet article." class="form-control input-md" required="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="desc">Description du produit</label>
+        <div class="col-md-4">
+            <input id="desc" name="desc" type="text" placeholder="Une description de ce produit." class="form-control input-md" required="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="price">Prix</label>
+        <div class="col-md-4">
+            <input id="price" name="price" type="number" class="form-control input-md" required="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="image">Image</label>
+        <div class="col-md-4">
+            <input id="image" name="image" type="text" placeholder="Une image de présentation." class="form-control input-md">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="promotion">Promotion</label>
+        <div class="col-md-4">
+            <input id="promotion" name="promotion" type="number" class="form-control input-md" required="">
+        </div>
+    </div>
+
+    <button type="submit">Ajouter</button>
+
+</form>
+
+<ul>
+    {{#each items as |item|}}
+        <li>{{item.trName}} ({{item.price}}e) : {{item.trDesc}}</li>
+    {{/each}}
+</ul>

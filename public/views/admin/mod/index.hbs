@@ -1,0 +1,54 @@
+<style>
+    hr {
+        border: 1px solid white !important;
+    }
+    .status-0 {
+        background-color: #D9534F
+    }
+    .status-2 {
+        background-color: #A8D5FF
+    }
+    .status-4 {
+        background-color: #AFFFA8
+    }
+    #tcounter {
+        color: red;
+    }
+
+</style>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Moderator Panel</span></h3>
+</div>
+<div class="col-md-12 bg-dark-1">
+    <div class="ut-info-box bg-main-1">
+        <div class="ut-info-box-icon">
+            <i class="ion-information-circled"></i>
+        </div>
+        Please read carefully <a href="https://goo.gl/Rh2fga" target="_blank">this document</a> to understand your role.
+    </div>
+</div>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>My commands in game</span></h3>
+</div>
+<div class="col-md-12">
+    <table class="ut-table">
+        <tbody>
+        <tr>
+            <th class="text-center">Date</th>
+            <th class="text-center">Avatar</th>
+            <th class="text-center">Command</th>
+            <th class="text-center">Validated by GM</th>
+            <th class="text-center">Points</th>
+        </tr>
+        {{#each transactions as |log|}}
+            <tr>
+                <td class="text-center">{{log.paymentId}}</td>
+                <td class="text-center">{{log.state}}</td>
+                <td class="text-center"><b>€{{log.amount}}</b></td>
+                <td class="text-center">{{dateFormat log.date "D/M/YYYY H:mm:s"}}</td>
+                <td class="text-center">{{#if log.credited}}Yes{{else}}No{{/if}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>

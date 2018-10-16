@@ -1,0 +1,65 @@
+{
+  "layouts": {
+    "default": {
+      "footer_visitors": "visiteurs"
+    },
+    "landing": {
+      "header_h1_text": "Bienvenue sur Paste Your Screens",
+      "header_lead_text": "Sauvegardez et partagez vos screenshots en un clic !",
+      "section_about_h2_text": "",
+      "section_about_h2_text_lead": "",
+      "section_about_p_text": "",
+      "section_about_ul_li_item_register": "",
+      "section_about_ul_li_item_beta": "",
+      "section_about_ul_li_item_interface": "",
+      "section_whoami_h2_text": "",
+      "section_whoami_h2_text_lead": "",
+      "section_contact_h2_text": "",
+      "section_contact_h2_text_lead": ""
+    },
+    "admin": {
+    }
+  },
+  "partials": {
+    "header": {
+      "li_item_about": "À propos",
+      "li_item_whoami": "Qui sommes-nous ?",
+      "li_item_contact": "Contact",
+      "li_item_register": "S'enregister",
+      "li_item_login": "Connexion",
+      "li_item_logout": "Déconnexion",
+      "li_item_my_gallery": "Ma gallerie"
+    },
+    "scripts": {
+      "notify_error_title": "Erreur",
+      "notify_success_title": "Succès"
+    }
+  },
+  "pages": {
+    "index": {
+      "welcome_msg_header_bg_info": "Bienvenue sur votre interface client",
+      "welcome_msg_header_bg_info_p_lead": "Cette interface est en construction.",
+      "discord_join_msg": "Rejoignez-nous sur Discord !"
+    },
+    "login": {
+      "title_card_header": "Connexion",
+      "form_email_label": "Adresse e-mail",
+      "form_email_php": "Votre adresse e-mail",
+      "form_password_label": "Mot de passe",
+      "form_password_php": "Votre mot de passe",
+      "form_submit_btn_loading_text": "Connexion en cours",
+      "form_submit_btn": "Connexion"
+    },
+    "register": {
+      "title_card_header": "Inscription",
+      "card-lead": "Inscrivez-vous pour sauvegarder et gérer vos screenshots.",
+      "form_email_label": "Adresse e-mail",
+      "form_email_muted": "Nous ne partagerons jamais votre email avec quiconque.",
+      "form_email_php": "Votre adresse e-mail",
+      "form_password_label": "Mot de passe",
+      "form_password_php": "Votre mot de passe",
+      "form_submit_btn_loading_text": "Validation de l'inscription",
+      "form_submit_btn": "S'inscrire"
+    }
+  }
+}

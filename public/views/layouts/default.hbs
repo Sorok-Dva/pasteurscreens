@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description"
+              content="Paste your screenshots to upload it online for free with a short url for sharing !"/>
+        <meta name="author" content="Llyam Garcia"/>
+
+        <!-- meta facebook -->
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Paste Your Screens | Instant screenshots sharing">
+        <meta property="og:description"
+              content="Paste your screenshots to upload it online for free with a short url for sharing !"/>
+
+        <title>Paste Your Screens | Instant screenshots sharing</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300i,400,700%7cMarcellus+SC" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/css/lux.min.css">
+        <link rel="stylesheet" href="/assets/bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/assets/bower_components/ionicons/css/ionicons.min.css">
+        <link rel="stylesheet" href="/assets/bower_components/datetimepicker/build/jquery.datetimepicker.min.css" type="text/css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.structure.min.css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.theme.min.css">
+        <link rel="stylesheet" href="/assets/css//scrolling-nav.css">
+        <style>
+            html,body{
+                height: 100%
+            }
+            #wrap {
+                min-height: -webkit-calc(100% - 100px);     /* Chrome */
+                min-height: -moz-calc(100% - 100px);     /* Firefox */
+                min-height: calc(100% - 100px);     /* native */
+            }
+            footer {
+                position: relative;
+                clear:both;
+            }
+            .page-wrapper {
+                padding: 15px;
+                background-color: #fff;
+                /*height: 100vh;*/
+            }
+
+            /* end ./page-wrapper */
+            .elem {
+                height: 15px;
+                width: 15px;
+                display: inline-block;
+                background-color: #fff;
+                margin-right: 10px;
+                margin-top: 5px;
+                border-radius: 100%;
+                border-width: 1px;
+                border-style: solid;
+                border-color: #ddd;
+            }
+            .elem:first-child {
+                margin-left: 10px;
+            }
+            .elem.elem-close {
+                background-color: #ff5d5b;
+                border-color: #ee4644;
+            }
+            .elem.elem-minimize {
+                background-color: #ffbb46;
+                border-color: #f1ad39;
+            }
+            .elem.elem-fullscreen {
+                background-color: #00c74f;
+                border-color: #01b849;
+            }
+
+            .terminal-section {
+                position: relative;
+                display: block;
+            }
+
+            .terminal-outer {
+                display: block;
+                border-radius: 4px;
+                overflow: hidden;
+                position: relative;
+                font-size: 14px;
+                font-weight: normal;
+                font-family: "Inconsolata", monospace;
+                color: #fff;
+                text-shadow: none;
+            }
+            .terminal-outer .terminal-container .terminal-header {
+                background-color: #c5c5c5;
+            }
+            .terminal-outer .terminal-container .terminal-header .terminal-controls {
+                display: inline-block;
+            }
+            .terminal-outer .terminal-container .terminal-header .terminal-controls .elem {
+                float: left;
+            }
+            .terminal-outer .terminal-container .terminal-body {
+                background-color: #303030;
+                padding: 10px;
+            }
+            .terminal-outer .terminal-container .terminal-body .terminal-body-inner {
+                min-height: 250px;
+                color: #fff;
+            }
+            .terminal-outer .terminal-container .terminal-body .terminal-body-inner p {
+                margin: 0 0 4px;
+            }
+            .terminal-outer .terminal-container .terminal-body .terminal-body-inner .terminal-user {
+                margin-right: 10px;
+                color: aqua;
+            }
+            .typed-cursor {
+                display: none;
+            }
+        </style>
+        <script src="/assets/bower_components/tether/dist/js/tether.min.js"></script>
+        <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/assets/js/jquery-ui.min.js"></script>
+        <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
+        <script src="/assets/bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.js"></script>
+        <script src="/assets/bower_components/moment/moment.js"></script>
+    </head>
+
+    <body>
+        {{> header}}
+
+        <div id="wrap">
+            <div class="container clear-top">
+                <div class="col-md-12">
+                    {{#if success_msg}}
+                        <div class="alert alert-success" style="margin-top: 100px;">{{success_msg}}</div>
+                    {{/if}}
+                    {{#if error_msg}}
+                        <div class="alert alert-danger" style="margin-top: 100px;">{{error_msg}}</div>
+                    {{/if}}
+                    {{#if error}}
+                        <div class="alert alert-danger" style="margin-top: 75px;">{{error}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{{body}}}
+        </div>
+
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; Pasteurscreens.tk 2018 - {{visitors}} {{tr.layouts.default.footer_visitors}}.</p>
+            </div>
+            <!-- /.container -->
+        </footer>
+        {{> modals }}
+        {{> scripts }}
+    </body>
+</html>

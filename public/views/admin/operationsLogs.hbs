@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" type="text/css">
+<style>
+    table.dataTable tbody tr {
+        background-color: #273138;
+    }
+</style>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des operations</span></h3>
+</div>
+<div class="col-md-12">
+    <table id="transactionsCS" class="ut-table">
+        <thead>
+        <tr>
+            <th class="text-center">Joueur</th>
+            <th class="text-center">Prix</th>
+            <th class="text-center">Type</th>
+            <th class="text-center">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each logs as |log|}}
+            <tr>
+                <td class="text-center"><a href="/admin/account/{{log.name}}" target="_blank">{{log.name}}</a></td>
+                <td class="text-center">{{kFormatter log.money}} cristaux</td>
+                <td class="text-center">
+                    {{#ifCond log.type '===' 'BUY'}}<b>Achat Item CS</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'SELL'}}<b>Ajout cristaux via item boutique</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'CONVSUB'}}<b>Convertion cristaux premium</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'CONVADD'}}<b>Convertion cristaux premium</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'EXCHSELL'}}<b>Vente PO exchanger (Achat Cristaux)</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'EXCHBUY'}}<b>Achat PO exchanger (Vente Cristaux)</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'OBL'}}<b>OBL</b>{{/ifCond}}
+                </td>
+                <td class="text-center">{{dateFormat log.time "DD/MM/YYYY HH:mm:ss"}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(() => {
+        $('#transactionsCS').DataTable({
+            "order": []
+        });
+    });
+</script>

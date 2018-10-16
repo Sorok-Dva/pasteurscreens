@@ -1,0 +1,52 @@
+<h1>Configuration du serveur</h1>
+<form method="post" action="/admin/server/edit">
+    {{#if errors}}
+        <div class="alert alert-danger">
+            {{#each errors}}
+                {{msg}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <div class="row">
+        <div class="col-md-3">
+            <label>Multiplicateur de points</label>
+            <input class="form-control" type="number" placeholder="Multiplicateur de points" name="pointsBonus" value="{{server.pointsBonus}}" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label for="warning" class="btn btn-warning">
+                Maintenance
+                <input type="checkbox" name="maintenance" id="warning" {{#if server.maintenance}}checked {{/if}}class="badgebox" />
+                <span class="badge">&check;</span>
+            </label>
+        </div>
+        <div class="col-md-6">
+            <label>Message de maintenance</label>
+            <input type="text" class="form-control" placeholder="Message de maintenance" name="maintenanceMsg" value="{{server.maintenanceMsg}}" >
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="danger" class="btn btn-danger">
+                Autoriser la connexion
+                <input type="checkbox" name="allowLogin" id="danger" {{#if server.allowLogin}}checked {{/if}}class="badgebox" />
+                <span class="badge">&check;</span>
+            </label>
+        </div>
+        <div class="col-md-6">
+            <label>Pourquoi ?</label>
+            <input type="text" class="form-control" placeholder="Pourquoi désactiver la connexion ?" name="msgLoginNotAllowed" value="{{server.msgLoginNotAllowed}}" >
+        </div>
+    </div>
+
+    <div class="hidden disabled">
+        <input type="hidden" class="form-control" name="_id" value="{{server._id}}" required>
+    </div>
+
+    <p class="text-center">
+        <button type="submit" class="btn btn-success btn-outline-rounded green"> Update this profile <span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></button>
+    </p>
+</form>

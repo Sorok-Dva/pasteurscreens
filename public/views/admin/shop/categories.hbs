@@ -1,0 +1,28 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="#">Boutique</a>
+    </li>
+    <li class="breadcrumb-item active">Catégories</li>
+</ol>
+<form method="post" action="/admin/shop/categories">
+    {{#if errors}}
+        <div class="alert alert-danger">
+            {{#each errors}}
+                {{msg}}
+            {{/each}}
+        </div>
+    {{/if}}
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="category">Créer une catégorie</label>
+        <div class="col-md-4">
+            <input id="category" name="category" type="text" placeholder="Un nom de catégorie pour votre boutique." class="form-control input-md" required="">
+        </div>
+        <button type="submit">Ajouter</button>
+    </div>
+</form>
+
+<ul>
+    {{#each categories as |category|}}
+        <li>{{category.trName}}</li>
+    {{/each}}
+</ul>

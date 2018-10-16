@@ -1,0 +1,61 @@
+<h1>Info de base</h1>
+<form method="post" action="/admin/profile/{{user.nickname}}/edit">
+    {{#if errors}}
+        <div class="alert alert-danger">
+            {{#each errors}}
+                {{msg}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <div class="form-group">
+        <label>Nickname</label>
+        <input class="form-control" placeholder="Nickname" name="nickname" value="{{user.nickname}}" required>
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="form-control" placeholder="Email" name="email" value="{{user.email}}" required>
+    </div>
+    <div class="form-group">
+        <label>Organisation name</label>
+        <input type="text" class="form-control" placeholder="organisation" name="organisationName" value="{{organisation.name}}" required>
+    </div>
+    <div class="form-group">
+        <label>Organisation country</label>
+        <input type="text" class="form-control" placeholder="organisationCountry" name="organisationCountry" value="{{organisation.country}}" required>
+    </div>
+
+    <div class="form-group">
+        <label>organisation money</label>
+        <input type="number" class="form-control" placeholder="Organisation money" name="organisationMoney" value="{{organisation.money}}" required>
+    </div>
+
+    <div class="hidden disabled">
+        <input type="hidden" class="form-control" name="userId" value="{{user._id}}" required>
+    </div>
+
+    <p class="text-center">
+        <button type="submit" class="btn btn-success btn-outline-rounded green"> Update this profile <span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></button>
+    </p>
+</form>
+<hr>
+<h1>Batiments</h1>
+
+{{#each user.buildings as |b|}}
+    {{{b.inConstruction}}}
+    {{#ifCond b.inConstruction '===' true}}
+        <button class="btn btn-info finishBuilding" data-build-id="{{b._id}}">Finish construction</button>
+    {{/ifCond}}
+{{/each}}
+
+<script>
+    $('.finishBuilding').click(function () {
+        let buildingId = $(this).attr('data-build-id');
+
+        $.post('/admin/build/' + buildingId + '/finish', {buildingId}, (data) => {
+            if (data.ok === 1) {
+                console.log('OK');
+            }
+        })
+    });
+</script>

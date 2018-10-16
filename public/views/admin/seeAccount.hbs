@@ -1,0 +1,408 @@
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" type="text/css">
+<style>
+    #souls_wrapper > * {
+        color: white !important;
+    }
+
+    #transactions_wrapper > * {
+        color: white !important;
+    }
+
+    table.dataTable tbody tr {
+        background-color: #273138;
+    }
+
+    .premiumLog {
+        color: #a045fb;
+        background-color: #5f2671 !important;
+    }
+</style>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>{{account.name}} (#{{account.id}})</span></h3>
+</div>
+<div class="ut-gap-2"></div>
+<div class="row vertical-gap col-md-12 bg-dark-3">
+    <div class="col-md-12">
+        <h3 class="ut-decorated-h-2"><span>Email : {{account.mail}}</span></h3>
+        <h3 class="ut-decorated-h-2"><span>IP création du compte : {{account.ipRegistration}}</span></h3>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{account.crystals}}</div>
+            <h3 class="ut-counter-title h4">Cristaux</h3>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{account.premiumCrystals}}</div>
+            <h3 class="ut-counter-title h4">Cristaux premium</h3>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{account.buyedCrystals}}</div>
+            <h3 class="ut-counter-title h4">Cristaux Achetés en boutique</h3>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{account.loggedCrystalsSum}}</div>
+            <h3 class="ut-counter-title h4">Cristaux logs en jeu (tout compris)</h3>
+        </div>
+    </div>
+    <hr>
+    <div class="col-md-12">
+        {{#ifCond account.preregistered '==' '1'}}
+            <button data-toggle="modal" data-target=".addEC" class="ut-btn ut-btn-x4 ut-btn-rounded ut-btn-outline ut-btn-color-white ut-btn-bg-main-3">Ajouter l'EC</button>
+        {{/ifCond}}
+        <button data-toggle="modal" data-target=".addCrystals" class="ut-btn ut-btn-x4 ut-btn-rounded ut-btn-outline  ut-btn-color-white ut-btn-bg-main-3">Ajouter des cristaux</button>
+        <button data-toggle="modal" data-target=".getPastBan" class="ut-btn ut-btn-x4 ut-btn-rounded ut-btn-outline ut-btn-bg-warning">Antécédents</button>
+        <button data-toggle="modal" data-target=".ban" class="ut-btn ut-btn-x4 ut-btn-rounded ut-btn-outline ut-btn-bg-danger">Bannir</button>
+    </div>
+</div>
+<div class="ut-gap-1"></div>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des ames</span></h3>
+</div>
+<div class="col-md-12">
+    <table id="souls" class="ut-table">
+        <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Pseudo</th>
+                <th class="text-center">Level</th>
+                <th class="text-center">Fairy Rank</th>
+                <th class="text-center">Fairy Level</th>
+                <th class="text-center">Faction</th>
+                <th class="text-center">Argent</th>
+                <th class="text-center">Réincs</th>
+                <th class="text-center">Mute ?</th>
+                <th class="text-center">Removed ?</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each account.avatars as |avatar|}}
+            <tr>
+                <th class="text-center">{{number avatar.id}}</th>
+                <th class="text-center"><a href="/admin/avatar/{{avatar.name}}/{{avatar.soul_id}}">{{avatar.name}}</a></th>
+                <th class="text-center">{{number avatar.level}}</th>
+                <th class="text-center">{{number avatar.fairy_rank}}</th>
+                <th class="text-center">{{number avatar.fairy_level}}</th>
+                <th class="text-center">{{#ifCond avatar.faction_res_id '===' 41240}}
+                    <img src="/assets/images/ChoiceFaction/Empire.png" width="25" alt="Empire">
+                {{else}}
+                    <img src="/assets/images/ChoiceFaction/League.png" width="25" alt="League">
+                {{/ifCond}}</th>
+                <th class="text-center">{{{AllodsCoin avatar.money}}}</th>
+                <th class="text-center">{{number avatar.IncarnationAmount}}</th>
+                <th class="text-center">{{number avatar.is_muted}}</th>
+                <th class="text-center">{{number avatar.is_removed}}</th>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+<div class="ut-gap-2"></div>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des transactions</span></h3>
+</div>
+<div class="col-md-12">
+    <table id="transactions" class="ut-table">
+        <thead>
+            <tr>
+                <th class="text-center">Payment Id</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Price</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Credited</th>
+                <th class="text-center">Count</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each transactions as |log|}}
+            <tr>
+                <td class="text-center">
+                    {{log.paymentId}}
+                    {{#ifCond log.paymentId '===' 'PAYMENT BONUS'}}<br>{{log.pack_desc}}{{/ifCond}}
+                    {{#ifCond log.paymentId '===' 'COMPENSATION'}}<br>{{log.pack_desc}}{{/ifCond}}
+                    {{#ifCond log.paymentId '===' 'REWARD'}}<br>{{log.pack_desc}}{{/ifCond}}
+                </td>
+                <td class="text-center">{{log.state}}</td>
+                <td class="text-center"><b>€{{log.amount}}</b></td>
+                <td class="text-center">{{dateFormat log.date "D/M/YYYY H:mm:s"}}</td>
+                <td class="text-center">{{#if log.credited}}Yes{{else}}No{{/if}}</td>
+                <td class="text-center">{{number log.count}} cristals</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+<div class="ut-gap-2"></div>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des transactions de cristaux</span></h3>
+</div>
+<div class="col-md-12">
+    <i>Les transactions cristaux premium apparaissent en violet.</i>
+    <table id="transactionsCS" class="ut-table">
+        <thead>
+            <tr>
+                <th class="text-center">Prix</th>
+                <th class="text-center">Type</th>
+                <th class="text-center">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each transactionsCS as |log|}}
+            <tr data-id="{{log.account_money_id}}">
+                <td class="text-center">{{kFormatter log.money}} cristaux</td>
+                <td class="text-center">
+                    {{#ifCond log.type '===' 'BUY'}}<b>Achat Item CS</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'SELL'}}<b>Ajout cristaux via item boutique</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'CONVSUB'}}<b>Convertion cristaux premium</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'CONVADD'}}<b>Convertion cristaux premium</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'EXCHSELL'}}<b>Vente PO exchanger (Achat Cristaux)</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'EXCHBUY'}}<b>Achat PO exchanger (Vente Cristaux)</b>{{/ifCond}}
+                    {{#ifCond log.type '===' 'OBL'}}<b>OBL</b>{{/ifCond}}
+                </td>
+                <td class="text-center">{{dateFormat log.time "DD/MM/YYYY HH:mm:ss"}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+<div class="modal ut-modal fade addCrystals" tabindex="-1" role="dialog" aria-labelledby="addCrystals" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title ut-title" id="myLargeModalLabel">Ajouter des cristaux à {{account.name}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ion-android-close"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/admin/account/{{account.name}}/addCrystals" method="post" id="addCrystals" class="ut-form">
+                    <select name="type" id="type" class="form-control required" style="color: white !important">
+                        <option value="REWARD">REWARD</option>
+                        <option value="COMPENSATION">COMPENSATION</option>
+                        <option value="PAYMENT BONUS">PAYMENT BONUS</option>
+                    </select>
+                    <div class="ut-gap"></div>
+                    <textarea class="form-control required" name="message" rows="5" placeholder="Message" ></textarea>
+                    <div class="ut-gap"></div>
+                    <input type="number" class="form-control required" name="count" placeholder="Number">
+                    <div class="nk-gap"></div>
+                    <div class="ut-form-response-success"></div>
+                    <div class="ut-form-response-error"></div>
+                    <div class="nk-gap"></div>
+                    <button class="ut-btn ut-btn-lg link-effect-4 ready" type="submit">OK</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal ut-modal fade addEC" tabindex="-1" role="dialog" aria-labelledby="addEC" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title ut-title" id="myLargeModalLabel">Ajouter l'Edition Collector à {{account.name}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ion-android-close"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ut-form-response-success"></div>
+                <div class="ut-form-response-error"></div>
+                <form action="/admin/account/{{account.name}}/addEc" method="post" id="addEC" class="ut-form">
+                    <button class="ut-btn ut-btn-lg link-effect-4 ready" type="submit">SEND</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal ut-modal fade ban" tabindex="-1" role="dialog" aria-labelledby="ban" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title ut-title" id="myLargeModalLabel">Bannir {{account.name}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ion-android-close"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ut-info-box text-info">
+                    <div class="ut-info-box-icon">
+                        <i class="ion-information-circled"></i>
+                    </div>
+                    <a href="https://docs.google.com/document/d/1AuGPdQb8WvZHE2RmIB6g4LwsSpm-ke6VcZB0ZjG-pZQ/pub?embedded=true" target="_blank">
+                        Explications <b>à lire pour choisir un motif</b>.
+                    </a>
+                </div>
+                <div class="ut-form-response-success"></div>
+                <div class="ut-form-response-error"></div>
+                <form action="/admin/account/{{account.name}}/ban" method="post" id="ban" class="ut-form" autocomplete="off">
+                    <select name="reason" class="form-control required" required>
+                        <option value="">Choisissez un motif</option>
+                        <option value="1">Langage abusif léger</option>
+                        <option value="2">Langage abusif soutenu</option>
+                        <option value="3">Langage illicite</option>
+                        <option value="4">Anti jeu</option>
+                        <option value="5">Flood</option>
+                        <option value="6">Mauvaise Intention</option>
+                        <option value="7">Triche</option>
+                        <option value="8">Pseudonyme inadapté</option>
+                        <option value="9">Nom de guilde inadapté</option>
+                        <option value="10">Multi-compte</option>
+                        <option value="11">Comportement inapproprié</option>
+                        <option value="12">Comportement légalement répréhensible</option>
+                    </select><br>
+                    <select name="numberError" class="form-control required" required>
+                        <option value="">Niveau récidive</option>
+                        <option value="0">Aucune récidive (première infraction - avertissement)</option>
+                        <option value="1">1ère récidive</option>
+                        <option value="2">2ème récidive</option>
+                        <option value="3">3ème récidive</option>
+                        <option value="4">4ème récidive</option>
+                        <option value="5">5ème récidive</option>
+                        <option value="6">6ème récidive</option>
+                        <option value="7">7ème récidive et +</option>
+                    </select>
+                    <textarea placeholder="Commentaire pour le joueur" name="comment" class="form-control required" required></textarea><br>
+                    <!--<input name="infoCapture" placeholder="Capture d'écran" type="text" class="form-control">-->
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="banDef" class="form-check-input">
+                            Ban Def
+                        </label>
+                    </div>
+                    <button class="ut-btn ut-btn-lg link-effect-4 ready" type="submit">BAN</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal ut-modal fade getPastBan" tabindex="-1" role="dialog" aria-labelledby="ban" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title ut-title" id="myLargeModalLabel">Antécédents de {{account.name}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ion-android-close"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ut-info-box text-info">
+                    <div class="ut-info-box-icon">
+                        <i class="ion-information-circled"></i>
+                    </div>
+                    <a href="https://docs.google.com/document/d/1AuGPdQb8WvZHE2RmIB6g4LwsSpm-ke6VcZB0ZjG-pZQ/pub?embedded=true" target="_blank">
+                        Explications <b>à lire pour choisir un motif</b>.
+                    </a>
+                </div>
+                <div class="ut-form-response-success"></div>
+                <div class="ut-form-response-error"></div>
+                <form action="/admin/account/{{account.name}}/ban" method="post" id="ban" class="ut-form" autocomplete="off">
+                    <select name="reason" class="form-control required" required>
+                        <option value="">Choisissez un motif</option>
+                        <option value="1">Langage abusif léger</option>
+                        <option value="2">Langage abusif soutenu</option>
+                        <option value="3">Langage illicite</option>
+                        <option value="4">Anti jeu</option>
+                        <option value="5">Flood</option>
+                        <option value="6">Mauvaise Intention</option>
+                        <option value="7">Triche</option>
+                        <option value="8">Pseudonyme inadapté</option>
+                        <option value="9">Nom de guilde inadapté</option>
+                        <option value="10">Multi-compte</option>
+                        <option value="11">Comportement inapproprié</option>
+                        <option value="12">Comportement légalement répréhensible</option>
+                    </select><br>
+                    <select name="numberError" class="form-control required" required>
+                        <option value="">Niveau récidive</option>
+                        <option value="0">Aucune récidive (première infraction - avertissement)</option>
+                        <option value="1">1ère récidive</option>
+                        <option value="2">2ème récidive</option>
+                        <option value="3">3ème récidive</option>
+                        <option value="4">4ème récidive</option>
+                        <option value="5">5ème récidive</option>
+                        <option value="6">6ème récidive</option>
+                        <option value="7">7ème récidive et +</option>
+                    </select>
+                    <textarea placeholder="Commentaire pour le joueur" name="comment" class="form-control required" required></textarea><br>
+                    <!--<input name="infoCapture" placeholder="Capture d'écran" type="text" class="form-control">-->
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="banDef" class="form-check-input">
+                            Ban Def
+                        </label>
+                    </div>
+                    <button class="ut-btn ut-btn-lg link-effect-4 ready" type="submit">BAN</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(() => {
+        $('#souls').DataTable();
+        $('#transactions').DataTable({ "order": []});
+        $('#transactionsCS').DataTable({
+            "order": []
+        });
+        $('div[aria-labelledby="addCrystals"]').appendTo(document.body);
+        $('div[aria-labelledby="addEC"]').appendTo(document.body);
+        $('div[aria-labelledby="ban"]').appendTo(document.body);
+    });
+
+    let premiumId = '{{account.premiumCrystalsId}}';
+    if (premiumId) {
+        $(`tr[data-id="${premiumId}"]`).addClass('premiumLog');
+    }
+    $('#addEC').submit((e) => {
+        e.preventDefault();
+        $.post(`/admin/account/{{account.name}}/addEC`, {name: '{{account.name}}', id: {{account.id}} }, (result) => {
+            if (result === 'OK') {
+                $('.ut-form-response-success').html('Edition collector envoyée').show();
+            } else {
+                $('.ut-form-response-error').html('Une erreur est survenue.').show();
+            }
+            return false;
+        });
+    });
+
+    $('#ban').submit((e) => {
+        e.preventDefault();
+        $('button[type="submit"]').attr('disabled', true);
+        let banDef = $('input[name="banDef"]').is(":checked");
+        let reason = $('select[name="reason"] option:selected').attr('value');
+        let message = $('textarea[name="comment"]').val();
+        let count = $('select[name="numberError"] option:selected').attr('value');
+        let screen = $('input[name="infoCapture"]').val();
+        $.post(`/admin/account/{{account.name}}/ban`, {name: '{{account.name}}', id: {{account.id}}, reason, message, count, screen, banDef }, (result) => {
+            if (result === 'OK') {
+                $('.ut-form-response-success').html('Joueur banni avec succès. Ne pas oublier de le kick du serveur.').show();
+                $('form#ban').hide();
+            } else {
+                $('.ut-form-response-error').html('Une erreur est survenue.').show();
+            }
+            return false;
+        });
+    });
+
+    $('#addCrystals').submit((e) => {
+        e.preventDefault();
+        $('button[type="submit"]').attr('disabled', true);
+        let type = $('select[id="type"] option:selected').text();
+        let message = $('textarea[name="message"]').val();
+        let count = parseInt($('input[name="count"]').val());
+        $.post(`/admin/account/{{account.name}}/addCrystals`, {type, message, count}, (result) => {
+            console.log(result);
+            if (result === 'OK') {
+                $('.ut-form-response-success').html('Les cristaux ont étaient ajoutés.').show();
+            } else {
+                $('.ut-form-response-error').html('Une erreur est survenue.').show();
+            }
+            return false;
+        });
+    });
+</script>

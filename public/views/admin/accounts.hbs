@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" type="text/css">
+<style>
+    #leaderboard_wrapper > * {
+        color: white !important;
+    }
+
+    table.dataTable tbody tr {
+        background-color: #273138;
+    }
+</style>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des comptes</span></h3>
+</div>
+<div class="col-md-12">
+    <i>PI : Pré-inscrit</i>
+    <table id="accounts" class="ut-table">
+        <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Compte</th>
+                <th class="text-center">Role</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Compte créer</th>
+                <th class="text-center">PI</th>
+                <th class="text-center">Validé</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each accounts as |acc|}}
+            <tr>
+                <th class="text-center">{{number acc.id}}</th>
+                <th class="text-center"><a href="/admin/account/{{acc.name}}">{{acc.name}}</a></th>
+                <th class="text-center">{{acc.role}}</th>
+                <th class="text-center">{{acc.mail}}</th>
+                <th class="text-center">{{dateFormat acc.dateRegister 'DD/MM/YYYY'}}</th>
+                <th class="text-center">{{acc.preregistered}}</th>
+                <th class="text-center">{{acc.validated}}</th>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#accounts').DataTable();
+    });
+</script>

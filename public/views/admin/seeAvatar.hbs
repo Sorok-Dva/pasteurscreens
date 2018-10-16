@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" type="text/css">
+<style>
+    #items_wrapper > * {
+        color: white !important;
+    }
+
+    #currencies_wrapper > * {
+        color: white !important;
+    }
+
+    table.dataTable tbody tr {
+        background-color: #273138;
+    }
+</style>
+<div class="row vertical-gap col-md-12 bg-dark-3">
+    <div class="col-md-12">
+        <h3 class="ut-decorated-h-3"><span>{{avatar.name}}, Level {{avatar.level}} (#{{avatar.id}})</span></h3>
+    </div>
+    <div class="col-md-12">
+        <h3 class="ut-decorated-h-2"><span><a href="/admin/account/{{user.nickname}}">Account Name : {{user.nickname}}</a></span></h3>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{kFormatterCoin avatar.money}}</div>
+            <h3 class="ut-counter-title h4">Pièces d'or</h3>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{kFormatterCoin avatar.moneyLast}}</div>
+            <h3 class="ut-counter-title h4">Pièces d'or <br/> (dernière session de jeu)</h3>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{kFormatterCoin avatar.moneyPrev}}</div>
+            <h3 class="ut-counter-title h4">Money Prev ?</h3>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="ut-counter-2">
+            <div class="ut-count-text">{{kFormatter avatar.crystals}}</div>
+            <h3 class="ut-counter-title h4">Crystals</h3>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="col-md-12">
+    <a href="/admin/avatar/{{account.name}}/send" class="ut-btn ut-btn-x4 ut-btn-rounded ut-btn-outline ut-btn-bg-danger">
+        Envoyer un courrier
+    </a>
+</div>
+<div class="ut-gap-1"></div>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des monnaies alternatives</span></h3>
+</div>
+<div class="col-md-12">
+    <table id="currencies" class="ut-table">
+        <thead>
+            <tr>
+                <th class="text-center" style="width:45px;"></th>
+                <th class="text-center" style="width:45px;">Resource ID</th>
+                <th class="text-center">XDB</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each currencies as |currency|}}
+            <tr>
+                <th class="text-center"><div style="background-image: url('{{currency.image}}');width: 40px;height: 40px;"></div></th>
+                <th class="text-center">{{currency.currency_res_id}}</th>
+                <th class="text-center"><a href="https://tool.allods-nova.tk/resourceFinder.php?q={{currency.currency_res_id}}" target="_blank">LIEN</a></th>
+                <th class="text-center">{{kFormatter currency.value}}</th>
+                <th class="text-center"></th>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+<div class="ut-gap-2"></div>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Inventaire</span></h3>
+</div>
+<div class="col-md-12">
+    <table id="items" class="ut-table">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 45px;"></th>
+                <th class="text-center">Item ID</th>
+                <th class="text-center">XDB</th>
+                <th class="text-center">Niveau</th>
+                <th class="text-center">Position</th>
+                <th class="text-center">Place</th>
+                <th class="text-center">Lié</th>
+                <th class="text-center">Maudit</th>
+                <th class="text-center">Expiration</th>
+                <th class="text-center">Add date</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each items as |item|}}
+            <tr>
+                <td class="text-center"><div style="background-image: url('{{item.image}}');width: 40px;height: 40px;"></div></td>
+                <td class="text-center">{{item.item_res_id}}</td>
+                <td class="text-center"><a href="https://tool.allods-nova.tk/resourceFinder.php?q={{item.item_res_id}}" target="_blank">LIEN</a></td>
+                <td class="text-center">{{item.item_level}}</td>
+                <td class="text-center">{{item.position}}</td>
+                <td class="text-center">{{item.place}}</td>
+                <td class="text-center">{{item.is_bound}}</td>
+                <td class="text-center">{{item.is_curesed}}</td>
+                <td class="text-center">{{dateFormat item.remove_time "D/M/YYYY H:mm:s"}}</td>
+                <td class="text-center">{{dateFormat item.item_create_time "D/M/YYYY H:mm:s"}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(() => {
+        $('#items').DataTable();
+        $('#currencies').DataTable();
+    });
+</script>

@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" type="text/css">
+<style>
+    #cmds_wrapper > * {
+        color: white !important;
+    }
+
+    table.dataTable tbody tr {
+        background-color: #273138;
+    }
+</style>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Liste des commandes IG à juger</span></h3>
+</div>
+<div class="col-md-12">
+    <table id="cmds" class="ut-table">
+        <thead>
+            <tr>
+                <th class="text-center">Modérateur</th>
+                <th class="text-center">IP</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Commande</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each actions as |action|}}
+            <tr id="line-{{action.id}}">
+                <th class="text-center">{{action.account}}#<span style="color:greenyellow">{{action.avatar}}</span>@{{action.rights}}</th>
+                <th class="text-center">{{action.ip}}</th>
+                <th class="text-center">{{dateFormat action.date 'DD/MM/YYYY HH:mm:ss'}}</th>
+                <th class="text-center">{{action.cmd}}</th>
+                <th class="text-center">
+                    <button class="btn btn-success" onclick="validateCmd('{{action.id}}')"><span class="fa fa-check"></span></button>
+                    <button class="btn btn-warning" onclick="needInfoCmd('{{action.id}}')"><span class="fa fa-question"></span></button>
+                    <button class="btn btn-danger" onclick="refuseCmd('{{action.id}}')"><span class="fa fa-remove"></span></button>
+                </th>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    let validateCmd = (id) => {
+        $.post('/admin/mod/cmds/validate', {id}, (data) => {
+           if (data === 'OK') $(`#line-${id}`).remove();
+        });
+    };
+
+    let refuseCmd = (id) => {
+       let comment = prompt('Raison du refus :');
+       if (comment !== '') {
+           $.post('/admin/mod/cmds/refuse', {id, comment}, (data) => {
+               if (data === 'OK') $(`#line-${id}`).remove();
+           });
+       }
+    };
+
+    let needInfoCmd = (id) => {
+       let comment = prompt('Quelle(s) info(s) ?');
+       if (comment !== '') {
+           $.post('/admin/mod/cmds/needInfo', {id, comment}, (data) => {
+               if (data === 'OK') $(`#line-${id}`).css('background-color', 'orange');
+           });
+       }
+    };
+
+    $(document).ready(function () {
+        // $('#cmds').DataTable();
+    });
+</script>
