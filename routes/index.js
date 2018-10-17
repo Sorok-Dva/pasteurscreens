@@ -30,7 +30,7 @@ router.get('/reset/:token', User.ensureNotAuthenticated, IndexController.getRese
 
 router.post('/screens/save', IndexController.postSaveScreen);
 
-router.get('/screens/:key', IndexController.getScreen);
+router.get('/-:key', IndexController.getScreen);
 
 passport.use(new LocalStrategy((nickname, password, done) => {
   User.getUser(nickname, user => {
