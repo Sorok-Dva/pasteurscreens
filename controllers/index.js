@@ -106,8 +106,10 @@ IndexController.getScreen = (req, res) => {
   });
 };
 
-IndexController.getHome = (req, res) => {
-    return res.render('index', {layout: 'landing'});
+IndexController.getGallery = (req, res) => {
+  Screen.getMyCaptures(req.user.id, (error, captures) => {
+    return res.render('gallery', {error, captures});
+  });
 };
 
 IndexController.postRegister = (req, res) => {
