@@ -13,6 +13,7 @@ Screen.saveScreen = async (screen, cb) => {
     into: 'screens',
     data: {
       uploadBy: screen.user ? screen.user.id : -1,
+      private: !!screen.user,
       uploadAt: new Date(),
       savedAsImg: true,
       base64: null,
@@ -20,7 +21,8 @@ Screen.saveScreen = async (screen, cb) => {
       shareKey: key
     }
   }).then(result => cb(key))
-    .catch(error => {
+    .catch (error => {
+      console.log(error);
       if (error.code === 'ER_DUP_ENTRY')
       { return cb(null) }
     });
