@@ -12,10 +12,10 @@ Screen.saveScreen = async (screen, cb) => {
   mysql.insert({
     into: 'screens',
     data: {
-      uploadBy: (req.user) ? req.user.id : -1,
+      uploadBy: (screen.user) ? req.user.id : -1,
       savedAsImg: true,
       base64: null,
-      path: screen,
+      path: screen.path,
       shareKey: key
     }
   }).then(result => cb(key))
