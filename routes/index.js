@@ -9,7 +9,7 @@ const IndexController = require('../controllers/index');
 
 router.get('/', IndexController.getIndex);
 
-router.get('/home', User.ensureAuthenticated, IndexController.getHome);
+router.get('/gallery', User.ensureAuthenticated, IndexController.getGallery);
 
 router.get('/register', User.ensureNotAuthenticated, IndexController.getRegister)
   .post('/register', User.ensureNotAuthenticated, IndexController.postRegister);
