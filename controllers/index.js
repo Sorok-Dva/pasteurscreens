@@ -92,7 +92,10 @@ IndexController.postSaveScreen = (req, res) => {
                 {
                     console.log(err);
                     console.log('DEBUG - feed:message: Saved to disk image attached by user:', userUploadedImagePath);
-                    Screen.saveScreen(userUploadedImagePath, result => {
+                    Screen.saveScreen({
+                      user: req.user,
+                      path: userUploadedImagePath
+                    }, result => {
                       return res.status(200).json({state: 'saved', key: result});
                     });
                 });
