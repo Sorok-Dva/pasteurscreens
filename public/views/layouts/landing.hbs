@@ -116,6 +116,26 @@
                 }
             }
 
+            $('body').bind('paste', function(e) {
+                var data = e.originalEvent.clipboardData.items[0].getAsFile();
+                var elem = this;
+                var fr = new FileReader;
+
+                fr.onloadend = function() {
+                    var img = new Image;
+                    img.onload = function() {
+                        $(elem).append(img);
+                    };
+                    img.src = fr.result;
+                    console.log(fr.result);
+                    $.post('/screens/save', {base64: fr.result}, (data) => {
+                        console.log(data);
+                    })
+                };
+
+                fr.readAsDataURL(data);
+
+            });
             window.addEventListener("paste", function(e){
 
                 // Handle the event
@@ -148,7 +168,6 @@
 
                         var imgData = canvas.toDataURL();
                         console.log(imgData);
-
                     }
                 });
             }, false);

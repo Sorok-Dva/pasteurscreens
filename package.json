@@ -13,6 +13,7 @@
   "dependencies": {
     "bcryptjs": "*",
     "body-parser": "^1.18.3",
+    "buffer": "^5.2.1",
     "chai": "^4.1.2",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
