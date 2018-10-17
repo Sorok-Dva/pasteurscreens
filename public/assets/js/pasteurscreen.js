@@ -9,7 +9,8 @@ $('body').bind('paste', (e) => {
       img.src = fr.result;
       $.post('/screens/save', {base64: fr.result}, (data) => {
         if (data.state === 'saved') {
-          $(location).attr('href', `https://purs.tk/-${data.key}`)
+          let url = data.private === true ? 'https://pasteurscreens.tk' : 'https://purs.tk';
+          $(location).attr('href', `${url}/-${data.key}`)
         }
       })
     };
