@@ -53,7 +53,7 @@ Screen.getMyCaptures = (userId, callback) => {
     select: '*',
     from: 'screens',
     where: `\`uploadBy\` = '${userId}'`,
-    orderByDesc: 'date'
+    orderByDesc: 'uploadAt'
   }).then(screens => callback(null, screens || null))
     .catch(error => callback(error, null));
 };
