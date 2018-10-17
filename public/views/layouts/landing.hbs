@@ -1,80 +1,80 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description"
-          content="Paste your screenshots to upload it online for free with a short url for sharing !"/>
-    <meta name="author" content="Llyam Garcia"/>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description"
+              content="Paste your screenshots to upload it online for free with a short url for sharing !"/>
+        <meta name="author" content="Llyam Garcia"/>
 
-    <!-- meta facebook -->
-    <meta property="og:type" content="website"/>
-    <meta property="og:title" content="Paste Your Screens | Instant screenshots sharing">
-    <meta property="og:description"
-          content="Paste your screenshots to upload it online for free with a short url for sharing !"/>
+        <!-- meta facebook -->
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Paste Your Screens | Instant screenshots sharing">
+        <meta property="og:description"
+              content="Paste your screenshots to upload it online for free with a short url for sharing !"/>
 
-    <title>Paste Your Screens | Instant screenshots sharing</title>
+        <title>Paste Your Screens | Instant screenshots sharing</title>
 
-    <style>
-        section {
-            padding: 70px 0 !important;
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300i,400,700%7cMarcellus+SC" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/lux.min.css">
-    <link rel="stylesheet" href="/assets/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/bower_components/ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.min.css">
-    <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.structure.min.css">
-    <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.theme.min.css">
-    <link rel="stylesheet" href="/assets/css//scrolling-nav.css">
+        <style>
+            section {
+                padding: 70px 0 !important;
+            }
+        </style>
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300i,400,700%7cMarcellus+SC" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/css/lux.min.css">
+        <link rel="stylesheet" href="/assets/bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/assets/bower_components/ionicons/css/ionicons.min.css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.structure.min.css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui/jquery-ui.theme.min.css">
+        <link rel="stylesheet" href="/assets/css//scrolling-nav.css">
 
-    <script src="/assets/bower_components/tether/dist/js/tether.min.js"></script>
-    <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/js/jquery-ui.min.js"></script>
-    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-</head>
+        <script src="/assets/bower_components/tether/dist/js/tether.min.js"></script>
+        <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/assets/js/jquery-ui.min.js"></script>
+        <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    </head>
 
-<body>
-{{> header}}
-<header class="bg-primary text-white">
-    <div class="container text-center">
-        <h1 class="text-white">{{tr.layouts.landing.header_h1_text}}</h1>
-        <p class="lead">{{tr.layouts.landing.header_lead_text}}</p>
-    </div>
-    <p>
-        Focus this tab and press <kbd>CTRL</kbd> + <kbd>V</kbd>. The image on your clipboard will be rendered on the canvas !
-    </p>
-    <div style="border:1px solid grey;" id="imgPreview"></div>
-</header>
+    <body>
+        {{> header}}
+        <header class="bg-primary text-white">
+            <div class="container text-center">
+                <h1 class="text-white">{{tr.layouts.landing.header_h1_text}}</h1>
+                <p class="lead">{{tr.layouts.landing.header_lead_text}}</p>
+            </div>
+            <p>
+                Focus this tab and press <kbd>CTRL</kbd> + <kbd>V</kbd>. The image on your clipboard will be rendered on the canvas !
+            </p>
+            <div style="border:1px solid grey;" id="imgPreview"></div>
+        </header>
 
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Pasteurscreens.tk 2018</p>
-    </div>
-</footer>
-<script>
-    $('body').bind('paste', function(e) {
-        var data = e.originalEvent.clipboardData.items[0].getAsFile();
-        var elem = this;
-        var fr = new FileReader;
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; Pasteurscreens.tk 2018</p>
+            </div>
+        </footer>
+        <script>
+            $('body').bind('paste', function(e) {
+                var data = e.originalEvent.clipboardData.items[0].getAsFile();
+                var elem = this;
+                var fr = new FileReader;
 
-        fr.onloadend = function() {
-            var img = new Image;
-            img.onload = function() {
-                $('#imgPreview').append(img);
-            };
-            img.src = fr.result;
-            $.post('/screens/save', {base64: fr.result}, (data) => {
-                if (data.state === 'saved') {
-                    $(location).attr('href', `/screens/${data.key}`)
-                }
-            })
-        };
-        fr.readAsDataURL(data);
-    });
-</script>
-{{> scripts }}
-</body>
+                fr.onloadend = function() {
+                    var img = new Image;
+                    img.onload = function() {
+                        $('#imgPreview').append(img);
+                    };
+                    img.src = fr.result;
+                    $.post('/screens/save', {base64: fr.result}, (data) => {
+                        if (data.state === 'saved') {
+                            $(location).attr('href', `/screens/${data.key}`)
+                        }
+                    })
+                };
+                fr.readAsDataURL(data);
+            });
+        </script>
+        {{> scripts }}
+    </body>
 </html>
