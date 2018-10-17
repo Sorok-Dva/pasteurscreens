@@ -1,22 +1,17 @@
 const paypal = require('../bin/paypal');
 const stripe = require('../bin/stripe');
-const mysql = require('../bin/mysql');
 
 const User = require('../models/user');
 const Screen = require('../models/screen');
 
 const config = require('./../config/main');
-const request = require('request');
+const crypto = require('crypto');
 const mailer = require('./../bin/mailer');
 const fs = require('fs');
 const IndexController = {};
 
 IndexController.getIndex = (req, res) => {
-    if (req.user) {
-        res.redirect('/home');
-    } else {
-        return res.render('index', {layout: 'landing'});
-    }
+  res.render('index');
 };
 
 IndexController.getRestore = (req, res) => {
@@ -37,97 +32,76 @@ IndexController.changeLang = (req, res) => {
 };
 
 IndexController.postSaveScreen = (req, res) => {
-  console.log(req.user);
-    try
-    {
-        // Decoding base-64 image
-        // Source: http://stackoverflow.com/questions/20267939/nodejs-write-base64-image-file
-        let decodeBase64Image = (dataString) =>
-        {
-            var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-            var response = {};
+  try {
+    // Decoding base-64 image
+    // Source: http://stackoverflow.com/questions/20267939/nodejs-write-base64-image-file
+    let decodeBase64Image = (dataString) => {
+      let matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      let response = {};
 
-            if (matches.length !== 3)
-            {
-                return new Error('Invalid input string');
-            }
+      if (matches.length !== 3)
+        return res.status(200).json({state: 'Invalid input string'});
 
-            response.type = matches[1];
-            response.data = new Buffer(matches[2], 'base64');
+      response.type = matches[1];
+      response.data = new Buffer(matches[2], 'base64');
 
-            return response;
-        }
+      return response;
+    };
 
-        // Regular expression for image type:
-        // This regular image extracts the "jpeg" from "image/jpeg"
-        var imageTypeRegularExpression      = /\/(.*?)$/;
+    // Regular expression for image type:
+    let imageTypeRegularExpression = /\/(.*?)$/;
 
-        // Generate random string
-        var crypto                          = require('crypto');
-        var seed                            = crypto.randomBytes(20);
-        var uniqueSHA1String                = crypto
-            .createHash('sha1')
-            .update(seed)
-            .digest('hex');
+    // Generate random string
+    let seed = crypto.randomBytes(20);
+    let uniqueSHA1String = crypto.createHash('sha1').update(seed).digest('hex');
 
-        var imageBuffer                      = decodeBase64Image(req.body.base64);
-        var userUploadedFeedMessagesLocation = 'public/assets/images/upload/';
+    let imageBuffer = decodeBase64Image(req.body.base64);
+    let userUploadedFeedMessagesLocation = 'public/assets/images/upload/';
 
-        var uniqueRandomImageName            = 'img-' + uniqueSHA1String;
-        // This variable is actually an array which has 5 values,
-        // The [1] value is the real image extension
-        var imageTypeDetected                = imageBuffer
-            .type
-            .match(imageTypeRegularExpression);
+    let uniqueRandomImageName = 'img-' + uniqueSHA1String;
+    // This letiable is actually an array which has 5 values,
+    // The [1] value is the real image extension
+    let imageTypeDetected = imageBuffer.type
+      .match(imageTypeRegularExpression);
 
-        var userUploadedImagePath            = userUploadedFeedMessagesLocation +
-            uniqueRandomImageName +
-            '.' +
-            imageTypeDetected[1];
+    let userUploadedImagePath = userUploadedFeedMessagesLocation + uniqueRandomImageName + '.' + imageTypeDetected[1];
 
-        // Save decoded binary image to disk
-        try
-        {
-            require('fs').writeFile(userUploadedImagePath, imageBuffer.data, {encoding: 'base64'},
-                function(err)
-                {
-                    console.log(err);
-                    console.log('DEBUG - feed:message: Saved to disk image attached by user:', userUploadedImagePath);
-                    Screen.saveScreen({
-                      user: req.user,
-                      path: userUploadedImagePath
-                    }, result => {
-                      return res.status(200).json({state: 'saved', key: result});
-                    });
-                });
-        }
-        catch(error)
-        {
-            console.log('ERROR:', error);
-        }
-
+    // Save decoded binary image to disk
+    try {
+      fs.writeFile(userUploadedImagePath, imageBuffer.data, {encoding: 'base64'},
+        err => {
+          Screen.saveScreen({
+            user: req.user,
+            path: userUploadedImagePath
+          }, result => {
+            return res.status(200).json({state: 'saved', key: result});
+          });
+        });
+    } catch (error) {
+      return res.status(200).json({error});
     }
-    catch(error)
-    {
-        console.log('ERROR:', error);
-    }
+  } catch (error) {
+    return res.status(200).json({error});
+  }
 };
 
 IndexController.getScreen = (req, res) => {
   Screen.getScreenshot(req.params.key, result => {
+    let viewScreenShot = () => {
+      Screen.increaseViews(req.params.key, result.views, callback => {
+        res.render('screen', {src: result.path.replace('public', '')});
+      });
+    };
+
     if (result === null) return res.redirect('/');
     if (result.private === 1) {
       if (req.user && req.user.id === result.uploadBy) {
-        Screen.increaseViews(req.params.key, result.views, callback => {
-          res.render('screen', {src: result.path.replace('public', '')});
-        });
+        return viewScreenShot();
       } else {
         return res.redirect('/')
       }
     } else {
-      Screen.increaseViews(req.params.key, result.views, callback => {
-        res.render('screen', {src: result.path.replace('public', '')});
-      });
+      return viewScreenShot();
     }
   });
 };
@@ -191,10 +165,10 @@ IndexController.postForgot = (req, res) => {
                 if (err) console.log(err);
                 let text = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                    'https://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n';
 
-                mailer(user.email, 'utravel@no-reply.fr', 'Password Reset', text, (error, info) => {
+                mailer(user.email, 'pus@no-reply.fr', 'Password Reset', text, (error, info) => {
                     console.log('http://' + req.headers.host + '/reset/' + token);
                     if (!error)
                     { req.flash('success_msg', 'An e-mail has been sent to ' + user.email + ' with further instructions.'); }
@@ -234,43 +208,13 @@ IndexController.postResetPassword = (req, res, next) => {
                 if (!err) {
                     let text = 'Hello,\n\n' +
                         'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n';
-                    mailer(user.email, 'utravel@no-reply.fr', 'Your password has been changed', text);
+                    mailer(user.email, 'pus@no-reply.fr', 'Your password has been changed', text);
                     req.flash('success_msg', 'Your password has been successfully reset.');
-                    res.redirect('/game');
+                    res.redirect('/');
                 }
             });
         })
     });
 };
-
-
-IndexController.postShop = (req, res) => {
-    let pack = req.body.pack;
-    let method = req.body.paymentMethod;
-    let price;
-    let cristals;
-    let bonus = 0;
-    let stripePayment = {
-                email: 'mail@mail.fr',
-                source: req.body.stripeToken,
-                amount: 100.00,
-                description: 'Buy',
-                cristals: 50
-            };
-    console.log(stripePayment);
-    stripe.createPay(stripePayment, req).then(transaction => {
-        console.log(transaction);
-        if (transaction) {
-                                    req.flash('success_msg', 'Payment successfully executed, cristals is added to your account.');
-                                    res.redirect('/home');
-                                } else {
-                                    req.flash('error_msg', 'An error has occurred with your transaction.');
-                                    res.redirect('/billing/cancel');
-                                }
-    }).catch((err) => {
-        res.redirect('/billing/cancel');
-    });
-};
-
 
 module.exports = IndexController;
