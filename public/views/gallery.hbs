@@ -85,11 +85,14 @@
                     </div>
                     <div class="caption card-body">
                         <h4 class="group card-title inner list-group-item-heading">
-                            {{dateFormat capture.uploadAt "DD/MM/YYYY HH:mm:ss"}}</h4>
-                        <p class="group inner list-group-item-text"></p>
+                            {{capture.title}} </h4>
+                        <p class="group inner list-group-item-text">{{dateFormat capture.uploadAt "DD/MM/YYYY HH:mm:ss"}}</p>
                         <div class="row">
                             <div class="col-xs-12 col-md-6">
-                                <button class="btn btn-danger" data-key="{{capture.shareKey}}" disabled>Delete (soon)</button>
+                                <button class="btn btn-sm btn-success" data-key="{{capture.shareKey}}" disabled>Copy Link (soon)</button>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <button class="btn btn-sm btn-danger" data-key="{{capture.shareKey}}" disabled>Delete (soon)</button>
                             </div>
                         </div>
                     </div>
