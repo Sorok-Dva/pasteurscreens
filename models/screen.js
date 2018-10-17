@@ -20,7 +20,7 @@ Screen.saveScreen = async (screen, cb) => {
       path: screen.path,
       shareKey: key
     }
-  }).then(result => cb(key))
+  }).then(result => cb({key, private: !!screen.user}))
     .catch (error => {
       console.log(error);
       if (error.code === 'ER_DUP_ENTRY')

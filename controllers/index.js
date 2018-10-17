@@ -66,7 +66,7 @@ IndexController.postSaveScreen = (req, res) => {
 
     let userUploadedImagePath = userUploadedFeedMessagesLocation + uniqueRandomImageName + '.' + imageTypeDetected[1];
 
-    // Save decoded binary image to disk
+    // Save decoded binary image to diskcon
     try {
       fs.writeFile(userUploadedImagePath, imageBuffer.data, {encoding: 'base64'},
         err => {
@@ -74,7 +74,7 @@ IndexController.postSaveScreen = (req, res) => {
             user: req.user,
             path: userUploadedImagePath
           }, result => {
-            return res.status(200).json({state: 'saved', key: result});
+            return res.status(200).json({state: 'saved', key: result.key, private: result.private});
           });
         });
     } catch (error) {
