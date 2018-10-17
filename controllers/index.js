@@ -37,15 +37,7 @@ IndexController.changeLang = (req, res) => {
 };
 
 IndexController.postSaveScreen = (req, res) => {
-    if (req.body.blobData) {
-      let screen = {
-        blobData: req.body.blobData
-      }
-        Screen.saveBlobScreen(screen, result => {
-           res.status(200).json('ok');
-        });
-    }
-    /*try
+    try
     {
         // Decoding base-64 image
         // Source: http://stackoverflow.com/questions/20267939/nodejs-write-base64-image-file
@@ -80,7 +72,7 @@ IndexController.postSaveScreen = (req, res) => {
         var imageBuffer                      = decodeBase64Image(req.body.base64);
         var userUploadedFeedMessagesLocation = 'public/assets/images/upload/';
 
-        var uniqueRandomImageName            = 'image-' + uniqueSHA1String;
+        var uniqueRandomImageName            = 'img-' + uniqueSHA1String;
         // This variable is actually an array which has 5 values,
         // The [1] value is the real image extension
         var imageTypeDetected                = imageBuffer
@@ -112,7 +104,7 @@ IndexController.postSaveScreen = (req, res) => {
     catch(error)
     {
         console.log('ERROR:', error);
-    }*/
+    }
 };
 
 IndexController.getScreen = (req, res) => {
