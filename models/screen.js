@@ -12,7 +12,8 @@ Screen.saveScreen = async (screen, cb) => {
   mysql.insert({
     into: 'screens',
     data: {
-      uploadBy: (screen.user) ? screen.user.id : -1,
+      uploadBy: screen.user ? screen.user.id : -1,
+      uploadAt: new Date(),
       savedAsImg: true,
       base64: null,
       path: screen.path,
@@ -43,6 +44,15 @@ Screen.getScreenshotById = (id, callback) => {
         where: `\`id\` = '${id}'`
     }).then(screen => callback(null, screen[0] || null))
         .catch(error => callback(error, null));
+};
+
+Screen.increaseViews = (key, views, callback) => {
+  mysql.update({
+    update: 'screens',
+    where: `\`shareKey\` = '${key}'`,
+    data: { views: views + 1 }
+  }).then(result => callback(result || null))
+    .catch(error => callback(null));
 };
 
 module.exports = Screen;
