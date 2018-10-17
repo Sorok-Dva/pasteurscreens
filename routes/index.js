@@ -16,7 +16,7 @@ router.get('/register', User.ensureNotAuthenticated, IndexController.getRegister
 
 router.get('/login', User.ensureNotAuthenticated, IndexController.getLogin)
   .post('/login', User.ensureNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/home', failureRedirect: '/?error=login', failureFlash: true
+    successRedirect: '/', failureRedirect: '/?error=login', failureFlash: true
 }), IndexController.postLogin);
 
 router.get('/logout', User.ensureAuthenticated, IndexController.getLogout);
