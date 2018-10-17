@@ -17,7 +17,7 @@ Screen.saveScreen = async (screen, cb) => {
       uploadAt: new Date(),
       savedAsImg: true,
       base64: null,
-      path: screen.path,
+      path: screen.path.replace('public/', ''),
       shareKey: key
     }
   }).then(result => cb({key, private: !!screen.user}))
@@ -46,6 +46,15 @@ Screen.getScreenshotById = (id, callback) => {
         where: `\`id\` = '${id}'`
     }).then(screen => callback(null, screen[0] || null))
         .catch(error => callback(error, null));
+};
+
+Screen.getMyCaptures = (userId, callback) => {
+  mysql.select({
+    select: '*',
+    from: 'screens',
+    where: `\`uploadBy\` = '${userId}'`
+  }).then(screens => callback(null, screens || null))
+    .catch(error => callback(error, null));
 };
 
 Screen.increaseViews = (key, views, callback) => {
