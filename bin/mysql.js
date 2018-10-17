@@ -30,8 +30,8 @@ exports.select = query => new Promise((resolve, reject) => {
         query.join ? `JOIN ${query.join.table} ON ${query.join.on} ` : '',
         query.where ? `WHERE ${query.where} ` : '',
         query.groupBy ? `GROUP BY \`${query.groupBy}\` ` : '',
-        query.orderByDesc ? `ORDER BY \`${query.orderBy}\` DESC ` : '',
-        query.orderByAsc ? `ORDER BY \`${query.orderBy}\` ASC ` : ''
+        query.orderByDesc ? `ORDER BY \`${query.orderByDesc}\` DESC ` : '',
+        query.orderByAsc ? `ORDER BY \`${query.orderByAsc}\` ASC ` : ''
     ].filter(Boolean).join('');
 
     exports.use().query(request, (error, rows) => {
