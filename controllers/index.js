@@ -41,7 +41,7 @@ IndexController.postSaveScreen = (req, res) => {
     {
         // Decoding base-64 image
         // Source: http://stackoverflow.com/questions/20267939/nodejs-write-base64-image-file
-        function decodeBase64Image(dataString)
+        let decodeBase64Image = (dataString) =>
         {
             var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
             var response = {};
@@ -92,7 +92,9 @@ IndexController.postSaveScreen = (req, res) => {
                 {
                     console.log(err);
                     console.log('DEBUG - feed:message: Saved to disk image attached by user:', userUploadedImagePath);
-                    return res.status(200).json('SAVED');
+                    Screen.saveScreen(userUploadedImagePath, result => {
+                      return res.status(200).json({state: 'saved', key: result});
+                    });
                 });
         }
         catch(error)
@@ -109,7 +111,7 @@ IndexController.postSaveScreen = (req, res) => {
 
 IndexController.getScreen = (req, res) => {
   Screen.getScreenshot(req.params.key, result => {
-    res.render('screen', {result});
+    res.render('screen', {src: result.path.replace('public', '')});
   });
 };
 
