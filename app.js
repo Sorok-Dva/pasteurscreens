@@ -99,6 +99,7 @@ app.use(flash());
 
 // -- Global Vars
 app.use((req, res, next) => {
+  if (req.get('host') === 'purs.tk' && !req.originalUrl.includes('/-')) return res.redirect(`https://pasteurscreens.tk${req.originalUrl}`);
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
