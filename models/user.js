@@ -77,7 +77,7 @@ User.validateAccount = async (key, callback) => {
         if (key) {
             mysql.update({
                 update: 'users',
-                where: `\`key\` = '${key}`,
+                where: `\`key\` = '${key}'`,
                 data: { validated: true }
             }).then(result => callback(result)).catch(error => callback(error));
         } else {
@@ -98,7 +98,7 @@ User.updatePassword = (email, password, callback) => {
 User.updateEmail = (oldMail, email, callback) => {
     mysql.update({
         update: 'users',
-        where: `\`email\` = '${oldMail}`,
+        where: `\`email\` = '${oldMail}'`,
         data: { email }
     }).then(result => callback(result)).catch(error => callback(error));
 };

@@ -37,6 +37,7 @@ IndexController.changeLang = (req, res) => {
 };
 
 IndexController.postSaveScreen = (req, res) => {
+  console.log(req.user);
     try
     {
         // Decoding base-64 image
@@ -114,12 +115,14 @@ IndexController.postSaveScreen = (req, res) => {
 
 IndexController.getScreen = (req, res) => {
   Screen.getScreenshot(req.params.key, result => {
-    res.render('screen', {src: result.path.replace('public', '')});
+    Screen.increaseViews(req.params.key, result.views, callback => {
+      res.render('screen', {src: result.path.replace('public', '')});
+    });
   });
 };
 
 IndexController.getHome = (req, res) => {
-    return res.render('index');
+    return res.render('index', {layout: 'landing'});
 };
 
 IndexController.postRegister = (req, res) => {
