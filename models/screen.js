@@ -52,7 +52,8 @@ Screen.getMyCaptures = (userId, callback) => {
   mysql.select({
     select: '*',
     from: 'screens',
-    where: `\`uploadBy\` = '${userId}'`
+    where: `\`uploadBy\` = '${userId}'`,
+    orderByDesc: 'date'
   }).then(screens => callback(null, screens || null))
     .catch(error => callback(error, null));
 };
