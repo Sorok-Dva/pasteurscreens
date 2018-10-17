@@ -115,7 +115,7 @@ IndexController.postSaveScreen = (req, res) => {
 
 IndexController.getScreen = (req, res) => {
   Screen.getScreenshot(req.params.key, result => {
-    if (result.private) {
+    if (result.private === 1) {
       if (req.user && req.user.id === result.uploadBy) {
         Screen.increaseViews(req.params.key, result.views, callback => {
           res.render('screen', {src: result.path.replace('public', '')});
