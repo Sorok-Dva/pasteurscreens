@@ -81,7 +81,7 @@
                 <div class="thumbnail card">
                     <div class="img-event" style="cursor: pointer"
                          onClick="return showScreen('{{capture.shareKey}}', {{capture.private}})">
-                        <img class="group list-group-image img-fluid" src="{{capture.path}}" alt="" />
+                        <img class="group list-group-image img-thumbnail" src="{{capture.path}}" alt="" />
                     </div>
                     <div class="caption card-body">
                         <h4 class="group card-title inner list-group-item-heading">{{capture.title}}</h4>
@@ -93,7 +93,8 @@
                                 </div>
                             {{else}}
                                 <div class="col-xs-12 col-md-6">
-                                    <button class="btn btn-sm btn-success" data-key="{{capture.shareKey}}" disabled>Copy Link (soon)</button>
+                                    <button id="copyShareLink" class="btn btn-sm btn-success"
+                                            data-clipboard-text="https://purs.tk/-{{capture.shareKey}}">Copy Link</button>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
                                     <button class="btn btn-sm btn-warning" data-key="{{capture.shareKey}}" disabled>Set private</button>
@@ -110,7 +111,36 @@
     </div>
 </div>
 
+<script src="/assets/js/clipboard.min.js"></script>
 <script>
+    let clipboard = new ClipboardJS('#copyShareLink');
+    clipboard.on('success', function(e) {
+        $.notify({
+            // options
+            icon: 'fa fa-check-circle',
+            title: 'Url copied to your clipboard',
+            message: ''
+        },{
+            type: 'success',
+            allow_dismiss: true,
+            newest_on_top: false,
+            showProgressbar: false,
+            placement: {
+                from: 'bottom',
+                align: 'left'
+            },
+            offset: 20,
+            spacing: 10,
+            z_index: 1031,
+            delay: 1000,
+            timer: 2500,
+            animate: {
+                enter: 'animated fadeInDown',
+                exit: 'animated fadeOutUp'
+            }
+        });
+        e.clearSelection();
+    });
     let showScreen = (key, privacy) => {
         let url = privacy === 1 ? 'https://pasteurscreens.tk' : 'https://purs.tk';
         $(location).attr('href', `${url}/-${key}`);
