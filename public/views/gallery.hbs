@@ -84,13 +84,18 @@
                         <img class="group list-group-image img-fluid" src="{{capture.path}}" alt="" />
                     </div>
                     <div class="caption card-body">
-                        <h4 class="group card-title inner list-group-item-heading">
-                            {{capture.title}} </h4>
+                        <h4 class="group card-title inner list-group-item-heading">{{capture.title}}</h4>
                         <p class="group inner list-group-item-text">{{dateFormat capture.uploadAt "DD/MM/YYYY HH:mm:ss"}}</p>
                         <div class="row">
-                            <div class="col-xs-12 col-md-6">
-                                <button class="btn btn-sm btn-success" data-key="{{capture.shareKey}}" disabled>Copy Link (soon)</button>
-                            </div>
+                            {{#ifCond capture.private '===' 1}}
+                                <div class="col-xs-12 col-md-6">
+                                    <button class="btn btn-sm btn-success" data-key="{{capture.shareKey}}" disabled>Set public</button>
+                                </div>
+                            {{else}}
+                                <div class="col-xs-12 col-md-6">
+                                    <button class="btn btn-sm btn-success" data-key="{{capture.shareKey}}" disabled>Copy Link (soon)</button>
+                                </div>
+                            {{/ifCond}}
                             <div class="col-xs-12 col-md-6">
                                 <button class="btn btn-sm btn-danger" data-key="{{capture.shareKey}}" disabled>Delete (soon)</button>
                             </div>
@@ -99,7 +104,6 @@
                 </div>
             </div>
         {{/each}}
-
     </div>
 </div>
 
@@ -109,8 +113,9 @@
         $(location).attr('href', `${url}/-${key}`);
     };
 
-    $(document).ready(function() {
-        $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');});
-        $('#grid').click(function(event){event.preventDefault();$('#products .item').removeClass('list-group-item');$('#products .item').addClass('grid-group-item');});
+    $(document).ready(() => {
+      let items = $('#products .item');
+        $('#list').click(event => { event.preventDefault(); items.addClass('list-group-item');});
+        $('#grid').click(event => { event.preventDefault(); items.removeClass('list-group-item'); items.addClass('grid-group-item');});
     });
 </script>
