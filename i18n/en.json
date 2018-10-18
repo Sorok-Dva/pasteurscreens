@@ -1,0 +1,65 @@
+{
+  "layouts": {
+    "default": {
+      "footer_visitors": "visitors"
+    },
+    "landing": {
+      "header_h1_text": "Welcome to Paste Your Screens",
+      "header_lead_text": "Save and share your screenshots in one click!",
+      "section_about_h2_text": "",
+      "section_about_h2_text_lead": "",
+      "section_about_p_text": "",
+      "section_about_ul_li_item_register": "",
+      "section_about_ul_li_item_beta": "",
+      "section_about_ul_li_item_interface": "",
+      "section_whoami_h2_text": "",
+      "section_whoami_h2_text_lead": "",
+      "section_contact_h2_text": "",
+      "section_contact_h2_text_lead": ""
+    },
+    "admin": {
+    }
+  },
+  "partials": {
+    "header": {
+      "li_item_about": "About",
+      "li_item_whoami": "Who are we ?",
+      "li_item_contact": "Contact",
+      "li_item_register": "Register",
+      "li_item_login": "Login",
+      "li_item_logout": "Logout",
+      "li_item_my_gallery": "My gallery"
+    },
+    "scripts": {
+      "notify_error_title": "Error",
+      "notify_success_title": "Success"
+    }
+  },
+  "pages": {
+    "index": {
+      "welcome_msg_header_bg_info": "Welcome to your customer interface",
+      "welcome_msg_header_bg_info_p_lead": "This interface is under construction.",
+      "discord_join_msg": "Join us on Discord !"
+    },
+    "login": {
+      "title_card_header": "Log in",
+      "form_email_label": "E-mail address",
+      "form_email_ph": "Your e-mail address",
+      "form_password_label": "Password",
+      "form_password_ph": "Your Password",
+      "form_submit_btn_loading_text": "Connection in progress",
+      "form_submit_btn": "Login"
+    },
+    "register": {
+      "title_card_header": "Register",
+      "card-lead": "Register to save and manage your screenshots.",
+      "form_email_label": "E-mail address",
+      "form_email_muted": "We'll never share your email with anyone else.",
+      "form_email_ph": "Your e-mail address",
+      "form_password_label": "Password",
+      "form_password_ph": "Your Password",
+      "form_submit_btn_loading_text": "Registration in progress",
+      "form_submit_btn": "Register"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+section {
+    padding: 70px 0 !important;
+}
+
+footer {
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+}
+
+.hidden {
+    display: none;
+}
+
+#imgPreview {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+#postSetting {
+    padding: 15px;
+}

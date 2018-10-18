@@ -1,0 +1,68 @@
+<style>
+    .ut-box {
+        height: auto !important;
+        padding: 15px;
+        margin-left: 2.5%;
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 0 30%;
+        -ms-flex: 0 0 30%;
+        flex: 0 0 30%;
+    }
+</style>
+<div class="col-md-12">
+    <h3 class="ut-decorated-h-3"><span>Your Account</span></h3>
+</div>
+<div class="col-md-12">
+    <div class="ut-tabs">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active show" href="#tabs-3-1" role="tab" data-toggle="tab" aria-selected="true">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tabs-3-2" role="tab" data-toggle="tab">Behavior</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active show" id="tabs-3-1">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="ut-decorated-h-2"><span>Manage account settings</span></h3>
+                        <div class="ut-info-box text-danger ut-form-response-error"></div>
+                        <div class="ut-success-box text-success ut-form-response-success"></div>
+                    </div>
+                    <div class="ut-gap-1"></div>
+                    <div class="bg-dark-3 ut-box" align="center">
+                        <h3>Change Password</h3>
+                        <input type="password" class="form-control" id="oldPassword" placeholder="Old password">
+                        <input type="password" class="form-control" id="newPassword" placeholder="New password">
+                        <input type="password" class="form-control" id="confNewPassword" placeholder="Confirm new password">
+                        <div class="ut-gap-1"></div>
+                        <button class="ut-btn link-effect-1 pull-right" type="submit" onclick="changePassword();">Update</button>
+                    </div>
+                    <div class="bg-dark-3 ut-box" align="center">
+                        <h3>Update Email</h3>
+                        <input type="email" class="form-control" id="oldMail" placeholder="Old Email">
+                        <input type="email" class="form-control" id="newMail" placeholder="New Email">
+                        <input type="email" class="form-control" id="confNewMail" placeholder="Confirm new Email">
+                        <div class="ut-gap-1"></div>
+                        <button class="ut-btn link-effect-1 pull-right" type="submit" onclick="changeEmail();">Update</button>
+                    </div>
+                   <!-- <div class="bg-dark-3 ut-box" align="center">
+                        <h3>Delete my account</h3>
+                        <b class="text-warning">DELETION IS IRREMEDABLE.</b>
+                        <input type="email" class="form-control" id="password" placeholder="Your password">
+                        <div class="ut-gap-1"></div>
+                        <button class="ut-btn link-effect-1" type="submit" onclick="deleteAccount();">Permanently delete my account</button>
+                    </div>-->
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="tabs-3-2">
+                <div class="ut-gap-1"></div>
+                SOON
+                <div class="ut-gap-1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/user.js"></script>
