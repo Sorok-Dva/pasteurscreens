@@ -80,8 +80,26 @@ IndexController.postSaveScreen = (req, res) => {
   }
 };
 
+IndexController.postDeleteScreen = (req, res) => {
+  if (req.params.key) {
+    Screen.getScreenshot(req.params.key, result => {
+      fs.unlink(`public/${result.path}`, err => {
+        Screen.deleteScreen(req.params.key, result => {
+          return res.status(200).json({state: 'deleted'});
+        });
+      });
+    });
+  } else {
+    return res.status(200).json({state: 'error', message: 'no key provided'});
+  }
+
+};
+
 IndexController.getScreen = (req, res) => {
   Screen.getScreenshot(req.params.key, result => {
+    if (result.path === null && result.deletedAt !== null) {
+      return res.redirect('/')
+    }
     let viewScreenShot = () => {
       Screen.increaseViews(req.params.key, result.views, callback => {
         res.render('screen', {screen: result, src: result.path.replace('public', '')});

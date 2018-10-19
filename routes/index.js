@@ -29,6 +29,7 @@ router.get('/reset/:token', User.ensureNotAuthenticated, IndexController.getRese
   .post('/reset/:token', User.ensureNotAuthenticated, IndexController.postResetPassword);
 
 router.post('/screens/save', IndexController.postSaveScreen);
+router.post('/screens/delete/:key', IndexController.postDeleteScreen);
 
 router.get('/-:key', IndexController.getScreen);
 

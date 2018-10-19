@@ -49,7 +49,7 @@ Screen.getMyCaptures = (userId, callback) => {
   mysql.select({
     select: '*',
     from: 'screens',
-    where: `\`uploadBy\` = '${userId}'`,
+    where: `\`uploadBy\` = '${userId}' AND \`deletedAt\` IS NULL`,
     orderByDesc: 'uploadAt'
   }).then(screens => callback(null, screens || null))
     .catch(error => callback(error, null));
@@ -60,6 +60,15 @@ Screen.increaseViews = (key, views, callback) => {
     update: 'screens',
     where: `\`shareKey\` = '${key}'`,
     data: { views: views + 1 }
+  }).then(result => callback(result || null))
+    .catch(error => callback(null));
+};
+
+Screen.deleteScreen = (key, callback) => {
+  mysql.update({
+    update: 'screens',
+    where: `\`shareKey\` = '${key}'`,
+    data: { path: null, deletedAt: new Date() }
   }).then(result => callback(result || null))
     .catch(error => callback(null));
 };

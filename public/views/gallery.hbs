@@ -77,7 +77,7 @@
     </div>
     <div id="products" class="row view-group">
         {{#each captures as |capture|}}
-            <div class="item col-xs-4 col-lg-4">
+            <div class="item col-xs-4 col-lg-4" data-main-div="{{capture.shareKey}}">
                 <div class="thumbnail card">
                     <div class="img-event" style="cursor: pointer"
                          onClick="return showScreen('{{capture.shareKey}}', {{capture.private}})">
@@ -93,7 +93,7 @@
                                 </div>
                             {{else}}
                                 <div class="col-xs-12 col-md-6">
-                                    <button id="copyShareLink" class="btn btn-sm btn-success"
+                                    <button class="btn btn-sm btn-success copyShareLink"
                                             data-clipboard-text="https://purs.tk/-{{capture.shareKey}}">Copy Link</button>
                                 </div>
                                 <div class="col-xs-12 col-md-6">
@@ -101,7 +101,10 @@
                                 </div>
                             {{/ifCond}}
                             <div class="col-xs-12 col-md-6">
-                                <button class="btn btn-sm btn-danger" data-key="{{capture.shareKey}}" disabled>Delete (soon)</button>
+                                <button class="btn btn-sm btn-danger"
+                                        data-action="delete"
+                                        data-key="{{capture.shareKey}}"
+                                        onclick="return askDelete('{{capture.shareKey}}')">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -113,10 +116,9 @@
 
 <script src="/assets/js/clipboard.min.js"></script>
 <script>
-    let clipboard = new ClipboardJS('#copyShareLink');
-    clipboard.on('success', function(e) {
+    let clipboard = new ClipboardJS('.copyShareLink');
+    clipboard.on('success', e => {
         $.notify({
-            // options
             icon: 'fa fa-check-circle',
             title: 'Url copied to your clipboard',
             message: ''
@@ -144,6 +146,24 @@
     let showScreen = (key, privacy) => {
         let url = privacy === 1 ? 'https://pasteurscreens.tk' : 'https://purs.tk';
         $(location).attr('href', `${url}/-${key}`);
+    };
+
+    let askDelete = (key) => {
+        let deleteButton = $(`button[data-key="${key}"][data-action="delete"]`);
+        deleteButton.html('Really ?').attr('onclick', `return deleteScreen('${key}');`);
+        $(document).click(() => {
+            if (!$(event.target).is("button")) {
+                deleteButton.html('Delete').attr('onclick', `return askDelete('${key}');`)
+            }
+        });
+    };
+
+    let deleteScreen = (key) => {
+      $.post(`/screens/delete/${key}`, result => {
+        if (result.state === 'deleted') {
+            $(`div[data-main-div="${key}"]`).fadeOut(300, () => $(this).remove());
+        }
+      });
     };
 
     $(document).ready(() => {
