@@ -92,8 +92,19 @@ IndexController.postDeleteScreen = (req, res) => {
   } else {
     return res.status(200).json({state: 'error', message: 'no key provided'});
   }
-
 };
+
+IndexController.postSetPrivacyScreen = (req, res) => {
+  if (req.params.key && (req.params.privacy === 'public' || req.params.privacy === 'private')) {
+    Screen.getScreenshot(req.params.key, result => {
+      Screen.setPrivacy({key: req.params.key, privacy: req.params.privacy}, result => {
+        return res.status(200).json({state: 'privacy updated'});
+      });
+    });
+  } else {
+    return res.status(200).json({state: 'error', message: 'no key or wrong privacy provided'});
+  }
+}
 
 IndexController.getScreen = (req, res) => {
   Screen.getScreenshot(req.params.key, result => {

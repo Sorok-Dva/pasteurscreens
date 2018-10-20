@@ -99,27 +99,36 @@
         {{#each captures as |capture|}}
             <div class="item col-xs-4 col-lg-4" data-main-div="{{capture.shareKey}}">
                 <div class="thumbnail card">
-                    <div class="imgFrame center-block" onClick="return showScreen('{{capture.shareKey}}', {{capture.private}})">
+                    <div class="imgFrame center-block"
+                         data-key="{{capture.shareKey}}"
+                         onClick="return showScreen('{{capture.shareKey}}', {{capture.private}})">
                             <span class="helper"></span>
                             <img class="img-thumbnail" src="{{capture.path}}" alt="" />
                     </div>
                     <div class="caption card-body">
                         <h5 class="group card-title inner list-group-item-heading">{{capture.title}}</h5>
-                        <p class="group inner list-group-item-text">{{dateFormat capture.uploadAt "DD/MM/YYYY HH:mm:ss"}}</p>
+                        <p class="group inner list-group-item-text">
+                            {{dateFormat capture.uploadAt "DD/MM/YYYY HH:mm:ss"}}
+                        </p>
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
-                                {{#ifCond capture.private '===' 1}}
-                                    <button class="btn btn-sm btn-success" data-key="{{capture.shareKey}}" disabled>Set public</button>
-                                {{else}}
+                                {{#ifCond capture.private '===' 0}}
                                     <button class="btn btn-sm btn-success copyShareLink"
-                                            data-clipboard-text="https://purs.tk/-{{capture.shareKey}}">Copy Link</button>
-                                    <button class="btn btn-sm btn-warning" data-key="{{capture.shareKey}}" disabled>Set private</button>
-                                {{/ifCond}}
-                                    <button class="btn btn-sm btn-danger"
-                                            data-action="delete"
                                             data-key="{{capture.shareKey}}"
-                                            onclick="return askDelete('{{capture.shareKey}}')">Delete
+                                            data-clipboard-text="https://purs.tk/-{{capture.shareKey}}">
+                                        Copy Link</button>
+                                {{/ifCond}}
+                                <button class="btn btn-sm
+{{#ifCond capture.private '===' 1}}btn-success{{else}}btn-warning{{/ifCond}} changePrivacy"
+                                        data-key="{{capture.shareKey}}"
+                                        onclick="return changePrivacy({{capture.private}}, '{{capture.shareKey}}')">
+                                        {{#ifCond capture.private '===' 1}}Set public{{else}}Set private{{/ifCond}}
                                     </button>
+                                <button class="btn btn-sm btn-danger"
+                                        data-action="delete"
+                                        data-key="{{capture.shareKey}}"
+                                        onclick="return askDelete('{{capture.shareKey}}')">Delete
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -181,9 +190,34 @@
       });
     };
 
+    let changePrivacy = (privacy, key) => {
+      let route = privacy === 1 ? 'public' : 'private';
+      $.post(`/screens/set/${route}/${key}`, result => {
+        if (result.state === 'privacy updated') {
+          if (route === 'public') {
+              $(`button.copyShareLink[data-key="${key}"]`).show();
+              $(`div.imgFrame[data-key="${key}"]`).attr('onclick', `return showScreen('${key}', 0)`);
+              $(`button.changePrivacy[data-key="${key}"]`)
+                      .removeClass('btn-success').addClass('btn-warning')
+                      .attr('onclick', `return changePrivacy(0, "${key}")`)
+                      .html('Set Private');
+          } else {
+              $(`button.copyShareLink[data-key="${key}"]`).hide();
+              $(`div.imgFrame[data-key="${key}"]`).attr('onclick', `return showScreen('${key}', 1)`);
+              $(`button.changePrivacy[data-key="${key}"]`)
+                      .removeClass('btn-warning').addClass('btn-success')
+                      .attr('onclick', `return changePrivacy(1, "${key}")`)
+                      .html('Set Public');
+          }
+        }
+      });
+    };
+
     $(document).ready(() => {
       let items = $('#products .item');
         $('#list').click(event => { event.preventDefault(); items.addClass('list-group-item');});
-        $('#grid').click(event => { event.preventDefault(); items.removeClass('list-group-item'); items.addClass('grid-group-item');});
+        $('#grid').click(event => {
+          event.preventDefault(); items.removeClass('list-group-item'); items.addClass('grid-group-item');
+        });
     });
 </script>

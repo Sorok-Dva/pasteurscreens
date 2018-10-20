@@ -73,4 +73,14 @@ Screen.deleteScreen = (key, callback) => {
     .catch(error => callback(null));
 };
 
+Screen.setPrivacy = (screen, callback) => {
+  let private = screen.privacy === "private" ? 1 : 0;
+  mysql.update({
+    update: 'screens',
+    where: `\`shareKey\` = '${screen.key}'`,
+    data: { private }
+  }).then(result => callback(result || null))
+    .catch(error => callback(null));
+};
+
 module.exports = Screen;

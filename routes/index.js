@@ -30,6 +30,7 @@ router.get('/reset/:token', User.ensureNotAuthenticated, IndexController.getRese
 
 router.post('/screens/save', IndexController.postSaveScreen);
 router.post('/screens/delete/:key', IndexController.postDeleteScreen);
+router.post('/screens/set/:privacy/:key', IndexController.postSetPrivacyScreen);
 
 router.get('/-:key', IndexController.getScreen);
 
