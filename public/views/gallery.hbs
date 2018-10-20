@@ -112,12 +112,11 @@
                         </p>
                         <div class="row">
                             <div class="col-xs-12 col-md-12">
-                                {{#ifCond capture.private '===' 0}}
                                     <button class="btn btn-sm btn-success copyShareLink"
+                                            {{#ifCond capture.private '===' 1}}style="display: none!important;"{{/ifCond}}
                                             data-key="{{capture.shareKey}}"
                                             data-clipboard-text="https://purs.tk/-{{capture.shareKey}}">
                                         Copy Link</button>
-                                {{/ifCond}}
                                 <button class="btn btn-sm
 {{#ifCond capture.private '===' 1}}btn-success{{else}}btn-warning{{/ifCond}} changePrivacy"
                                         data-key="{{capture.shareKey}}"
