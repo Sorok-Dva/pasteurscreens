@@ -8,7 +8,7 @@
         <ul class="navbar-nav ml-auto">
             {{#if usingPurs}}
                 <li class="nav-item pull-left">
-                   <a class="nav-link" href="#/" onclick="return history.go(-1);">Go back</a>
+                   <a class="nav-link menuActionPurs" href="#/" >...</a>
                 </li>
             {{else}}
                 <li class="nav-item pull-left">
@@ -39,3 +39,12 @@
         </ul>
     </div>
 </nav>
+<script>
+    $(document).ready(() => {
+        if (document.referrer === '') {
+          $('.menuActionPurs').html('Upload your screen').attr('href', 'https://pasteurscreens.tk')
+        } else {
+            $('.menuActionPurs').html('Go back').attr('onclick', 'return history.back();')
+        }
+    })
+</script>

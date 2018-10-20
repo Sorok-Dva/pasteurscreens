@@ -12,6 +12,10 @@ footer {
     width: 100%;
 }
 
+.bg-primary-pus {
+    background-color: #1a1a1a !important;
+}
+
 .main-content {
     flex: 1;
 }
