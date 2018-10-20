@@ -64,12 +64,20 @@
         text-align: center;
         cursor: pointer;
         height: 250px;
-        overflow: auto
+        overflow: auto;
+        white-space: nowrap;
+    }
+
+    .helper {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
     }
 
     img {
         float:right;
         height:auto;
+        vertical-align: middle;
     }
 </style>
 <div class="container" style="margin-top: 75px;">
@@ -92,6 +100,7 @@
             <div class="item col-xs-4 col-lg-4" data-main-div="{{capture.shareKey}}">
                 <div class="thumbnail card">
                     <div class="imgFrame center-block" onClick="return showScreen('{{capture.shareKey}}', {{capture.private}})">
+                            <span class="helper"></span>
                             <img class="img-thumbnail" src="{{capture.path}}" alt="" />
                     </div>
                     <div class="caption card-body">

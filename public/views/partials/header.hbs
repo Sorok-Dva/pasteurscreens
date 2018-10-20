@@ -6,29 +6,35 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item pull-left">
-                <small><a class="nav-link" href="/?clang=fr">🇫🇷</a></small>
-            </li>
-            <li class="nav-item pull-left">
-                <small><a class="nav-link" href="/?clang=en">🇬🇧</a></small>
-            </li>
-            {{#if session}}
-              <!--  <li class="nav-item">
-                    <a class="nav-link" href="/account">Mon compte</a>
-                </li>-->
-                <li class="nav-item">
-                    <a class="nav-link" href="/gallery">{{tr.partials.header.li_item_my_gallery}}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">{{tr.partials.header.li_item_logout}}</a>
+            {{#if usingPurs}}
+                <li class="nav-item pull-left">
+                   <a class="nav-link" href="#/" onclick="return history.go(-1);">Go back</a>
                 </li>
             {{else}}
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">{{tr.partials.header.li_item_register}}</a>
+                <li class="nav-item pull-left">
+                    <small><a class="nav-link" href="/?clang=fr">🇫🇷</a></small>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">{{tr.partials.header.li_item_login}}</a>
+                <li class="nav-item pull-left">
+                    <small><a class="nav-link" href="/?clang=en">🇬🇧</a></small>
                 </li>
+                {{#if session}}
+                    <!--  <li class="nav-item">
+                          <a class="nav-link" href="/account">Mon compte</a>
+                      </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gallery">{{tr.partials.header.li_item_my_gallery}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">{{tr.partials.header.li_item_logout}}</a>
+                    </li>
+                {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">{{tr.partials.header.li_item_register}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">{{tr.partials.header.li_item_login}}</a>
+                    </li>
+                {{/if}}
             {{/if}}
         </ul>
     </div>

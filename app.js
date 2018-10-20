@@ -99,14 +99,16 @@ app.use(flash());
 
 // -- Global Vars
 app.use((req, res, next) => {
-  if (req.get('host') === 'purs.tk' && !req.originalUrl.includes('/-')) return res.redirect(`https://pasteurscreens.tk${req.originalUrl}`);
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error_msg = req.flash('error_msg');
-    res.locals.error = req.flash('error');
-    res.locals.user = req.user || null;
-    res.locals.session = req.user || null;
-    res.locals.admin = !!(req.user && config.roles.includes(req.user.role));
-    next();
+  if (req.get('host') === 'purs.tk' && !req.originalUrl.includes('/-'))
+      return res.redirect(`https://pasteurscreens.tk${req.originalUrl}`);
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
+  res.locals.session = req.user || null;
+  res.locals.usingPurs = !!(req.get('host') === 'purs.tk');
+  res.locals.admin = !!(req.user && config.roles.includes(req.user.role));
+  next();
 });
 app.set('env', conf.ENV);
 app.set('trust proxy', true);
