@@ -14,24 +14,27 @@ IndexController.getIndex = (req, res) => {
 };
 
 IndexController.getRestore = (req, res) => {
-    return res.render('index');
+  return res.render('index');
 };
 
 IndexController.getRegister = (req, res) => {
-    return res.render('register');
+  return res.render('register');
 };
 
 IndexController.getLogin = (req, res) => {
-    return res.render('login');
+  return res.render('login');
 };
 
 IndexController.changeLang = (req, res) => {
-    res.cookie('anw_lang', req.params.lang, { maxAge: 900000, httpOnly: false });
-    res.redirect('/');
+  res.cookie('anw_lang', req.params.lang, { maxAge: 900000, httpOnly: false });
+  res.redirect('/');
 };
 
 IndexController.postSaveScreen = (req, res) => {
   try {
+    if (req.body.size > 10485760) {
+      return res.status(200).json({state: 'Screenshot too large, limited to 10mo'});
+    }
     // Decoding base-64 image
     // Source: http://stackoverflow.com/questions/20267939/nodejs-write-base64-image-file
     let decodeBase64Image = (dataString) => {
@@ -39,7 +42,7 @@ IndexController.postSaveScreen = (req, res) => {
       let response = {};
 
       if (matches.length !== 3)
-        return res.status(200).json({state: 'Invalid input string'});
+      { return res.status(200).json({state: 'Invalid input string'}); }
 
       response.type = matches[1];
       response.data = new Buffer(matches[2], 'base64');
@@ -67,7 +70,8 @@ IndexController.postSaveScreen = (req, res) => {
             user: req.user,
             path: userUploadedImagePath,
             title: req.body.title || 'no title',
-            privacy: req.body.privacy
+            privacy: req.body.privacy,
+            size: req.body.size
           }, result => {
             return res.status(200).json({state: 'saved', key: result.key, private: result.private});
           });
@@ -137,110 +141,110 @@ IndexController.getGallery = (req, res) => {
 };
 
 IndexController.postRegister = (req, res) => {
-    let email = req.body.email,
-        password = req.body.password,
-        repeatPass = req.body.passwordRepeat,
-        ip = req.ip
+  let email = req.body.email,
+    password = req.body.password,
+    repeatPass = req.body.passwordRepeat,
+    ip = req.ip
     ;
 
     /*    req.checkBody('email', req.i18n_texts.register.error.EMPTY_MAIL).notEmpty();
         req.checkBody('email', req.i18n_texts.register.error.INVALID_MAIL).isEmail();
         req.checkBody('email', req.i18n_texts.register.error.MAIL_NOT_MATCHES).equals(repeatEmail);
         req.checkBody('password', req.i18n_texts.register.error.EMPTY_PASSWORD).notEmpty();
-        req.checkBody('password', req.i18n_texts.register.error.PASSWORDS_NOT_MATCHES).equals(repeatPass);*/
+        req.checkBody('password', req.i18n_texts.register.error.PASSWORDS_NOT_MATCHES).equals(repeatPass); */
     /*
 
         let errors = req.validationErrors();
     */
 
-    /*if (errors) {
+    /* if (errors) {
         return res.status(200).json({errors});
-    } else {*/
-    User.createUser({email, password, ip}, (result, key, err) => {
-        if (!err && result) {
-            res.redirect('login');
-        }
-    })
-    // }
+    } else { */
+  User.createUser({email, password, ip}, (result, key, err) => {
+    if (!err && result) {
+      res.redirect('login');
+    }
+  })
+  // }
 };
 
 IndexController.postLogin = (req, res) => {
-    res.redirect('/');
+  res.redirect('/');
 };
 
 IndexController.getLogout = (req, res) => {
-    req.logout();
-    res.redirect('/');
+  req.logout();
+  res.redirect('/');
 };
 
 IndexController.postForgot = (req, res) => {
-    crypto.randomBytes(20, (err, buf) => {
+  crypto.randomBytes(20, (err, buf) => {
+    if (err) console.log(err);
+    let token = buf.toString('hex');
+    User.findOne({ email: req.body.email }, (err, user) => {
+      if (err) console.log(err);
+      if (!user) {
+        req.flash('error_msg', 'No account with that email address exists.');
+        return res.redirect('/forgot');
+      }
+
+      user.resetPasswordToken = token;
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+      user.save((err) => {
         if (err) console.log(err);
-        let token = buf.toString('hex');
-        User.findOne({ email: req.body.email }, (err, user) => {
-            if (err) console.log(err);
-            if (!user) {
-                req.flash('error_msg', 'No account with that email address exists.');
-                return res.redirect('/forgot');
-            }
-
-            user.resetPasswordToken = token;
-            user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-            user.save((err) => {
-                if (err) console.log(err);
-                let text = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+        let text = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                     'https://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n';
 
-                mailer(user.email, 'pus@no-reply.fr', 'Password Reset', text, (error, info) => {
-                    console.log('http://' + req.headers.host + '/reset/' + token);
-                    if (!error)
-                    { req.flash('success_msg', 'An e-mail has been sent to ' + user.email + ' with further instructions.'); }
-                    else
-                    { req.flash('error_msg', 'An error occurred while sending you an email. Please retry.'); }
+        mailer(user.email, 'pus@no-reply.fr', 'Password Reset', text, (error, info) => {
+          console.log('http://' + req.headers.host + '/reset/' + token);
+          if (!error)
+          { req.flash('success_msg', 'An e-mail has been sent to ' + user.email + ' with further instructions.'); }
+          else
+          { req.flash('error_msg', 'An error occurred while sending you an email. Please retry.'); }
 
-                    res.redirect('/?info=reset-password');
-                });
-            });
+          res.redirect('/?info=reset-password');
         });
+      });
     });
+  });
 };
 
 IndexController.getResetPassword = (req, res) => {
-    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, (err, user) => {
-        if (err) console.log(err);
-        if (!user) {
-            req.flash('error_msg', 'Password reset token is invalid or has expired.');
-            return res.redirect('/forgot');
-        }
-        res.render('users/reset');
-    });
+  User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, (err, user) => {
+    if (err) console.log(err);
+    if (!user) {
+      req.flash('error_msg', 'Password reset token is invalid or has expired.');
+      return res.redirect('/forgot');
+    }
+    res.render('users/reset');
+  });
 };
 
 IndexController.postResetPassword = (req, res, next) => {
-    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, (err, user) => {
-        if (err) console.log(err);
-        if (!user) {
-            req.flash('error_msg', 'Password reset token is invalid or has expired.');
-            return res.redirect('back');
-        }
+  User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, (err, user) => {
+    if (err) console.log(err);
+    if (!user) {
+      req.flash('error_msg', 'Password reset token is invalid or has expired.');
+      return res.redirect('back');
+    }
 
-        user.password = req.body.password;
+    user.password = req.body.password;
 
-        User.resetPassword(user, () => {
-            req.logIn(user, (err) => {
-                if (!err) {
-                    let text = 'Hello,\n\n' +
+    User.resetPassword(user, () => {
+      req.logIn(user, (err) => {
+        if (!err) {
+          let text = 'Hello,\n\n' +
                         'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n';
-                    mailer(user.email, 'pus@no-reply.fr', 'Your password has been changed', text);
-                    req.flash('success_msg', 'Your password has been successfully reset.');
-                    res.redirect('/');
-                }
-            });
-        })
-    });
+          mailer(user.email, 'pus@no-reply.fr', 'Your password has been changed', text);
+          req.flash('success_msg', 'Your password has been successfully reset.');
+          res.redirect('/');
+        }
+      });
+    })
+  });
 };
 
 module.exports = IndexController;

@@ -15,7 +15,8 @@ Screen.saveScreen = async (screen, cb) => {
       uploadAt: new Date(),
       savedAsImg: true,
       path: screen.path.replace('public/', ''),
-      shareKey: key
+      shareKey: key,
+      size: screen.size
     }
   }).then(res => cb({key, private: screen.privacy}))
     .catch (error => {
