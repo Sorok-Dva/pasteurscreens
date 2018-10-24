@@ -4,9 +4,11 @@ const User = require('../models/user');
 const Screen = require('../models/screen');
 
 const config = require('./../config/main');
-const crypto = require('crypto');
 const mailer = require('./../bin/mailer');
+const Buffer = require('safe-buffer').Buffer;
+const crypto = require('crypto');
 const fs = require('fs');
+
 const IndexController = {};
 
 IndexController.getIndex = (req, res) => {
