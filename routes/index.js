@@ -17,7 +17,7 @@ router.get('/register', User.ensureNotAuthenticated, IndexController.getRegister
 router.get('/login', User.ensureNotAuthenticated, IndexController.getLogin)
   .post('/login', User.ensureNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/', failureRedirect: '/?error=login', failureFlash: true
-}), IndexController.postLogin);
+  }), IndexController.postLogin);
 
 router.get('/logout', User.ensureAuthenticated, IndexController.getLogout);
 
@@ -37,14 +37,14 @@ router.get('/-:key', IndexController.getScreen);
 passport.use(new LocalStrategy((nickname, password, done) => {
   User.getUser(nickname, user => {
     if (!user) return done(null, false, {message: 'Unknown User'});
-      User.comparePassword(password, user.password, (err, isMatch) => {
-        if (err) throw err;
-          if (isMatch) {
-            return done(null, user);
-          } else {
-            return done(null, false, {message: 'Invalid password'});
-        }
-      });
+    User.comparePassword(password, user.password, (err, isMatch) => {
+      if (err) throw err;
+      if (isMatch) {
+        return done(null, user);
+      } else {
+        return done(null, false, {message: 'Invalid password'});
+      }
+    });
   });
 }));
 

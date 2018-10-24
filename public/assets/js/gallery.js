@@ -4,7 +4,7 @@ clipboard.on('success', e => {
     icon: 'fa fa-check-circle',
     title: 'Url copied to your clipboard',
     message: ''
-  },{
+  }, {
     type: 'success',
     allow_dismiss: true,
     newest_on_top: false,
@@ -34,7 +34,7 @@ let askDelete = (key) => {
   let deleteButton = $(`button[data-key="${key}"][data-action="delete"]`);
   deleteButton.html('Really ?').attr('onclick', `return deleteScreen('${key}');`);
   $(document).click(() => {
-    if (!$(event.target).is("button")) {
+    if (!$(event.target).is('button')) {
       deleteButton.html('Delete').attr('onclick', `return askDelete('${key}');`)
     }
   });
@@ -73,7 +73,7 @@ let changePrivacy = (privacy, key) => {
 
 $(document).ready(() => {
   let items = $('#products .item');
-  $('#list').click(event => { event.preventDefault(); items.addClass('list-group-item');});
+  $('#list').click(event => { event.preventDefault(); items.addClass('list-group-item'); });
   $('#grid').click(event => {
     event.preventDefault(); items.removeClass('list-group-item'); items.addClass('grid-group-item');
   });

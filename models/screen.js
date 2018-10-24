@@ -27,8 +27,8 @@ Screen.saveScreen = async (screen, cb) => {
 };
 
 Screen.getScreenshot = (key, callback) => {
-    mysql.select({
-        select: '*',
+  mysql.select({
+    select: '*',
         from: 'screens',
         where: `\`shareKey\` = '${key}'`
     }).then(screen => callback(screen[0] || null))

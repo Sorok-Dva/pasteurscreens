@@ -9,7 +9,7 @@ const adminController = require('../controllers/admin');
  * @route GET '/admin/'
  */
 router.get('/', User.ensureIsAdmin, (req, res) => {
-	return res.render('admin/index', { });
+  return res.render('admin/index', { });
 });
 
 router.get('/accounts', User.ensureIsAdmin, adminController.getAccounts);
