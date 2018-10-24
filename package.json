@@ -3,13 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "lint": "eslint --fix --cache .",
+    "start": "npm run lint && node ./bin/www",
     "start debug": "DEBUG=pasteurscreens:* npm start",
     "dev": "nodemon --exec npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Llyam Garcia",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sorok-Dva/pasteurscreens"
+  },
+  "bugs": {
+    "url": "https://github.com/Sorok-Dva/pasteurscreens/issues"
+  },
   "dependencies": {
     "bcryptjs": "*",
     "body-parser": "^1.18.3",
@@ -70,5 +78,6 @@
   "main": "bin/www",
   "engines": {
     "yarn": ">= 1.0.0"
-  }
+  },
+  "homepage": "https://github.com/Sorok-Dva/pasteurscreens#readme"
 }
