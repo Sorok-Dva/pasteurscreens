@@ -131,7 +131,7 @@ Gallery.SetScreenPrivacy = (req, res, next) => {
   }).then(screen => {
     if (_.isNil(screen)) return next(new BackError('Screen not found', 404));
 
-    screen.private = screen.privacy === 'private' ? 1 : 0;
+    screen.private = req.params.privacy === 'private' ? 1 : 0;
     screen.save().then(() => res.status(200).json({ state: 'privacy updated' }))
       .catch(error => next(new BackError(error)));
   });
