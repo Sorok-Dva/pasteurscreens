@@ -104,7 +104,8 @@ Gallery.deleteScreen = (req, res, next) => {
   if (_.isNil(req.params.key)) return next(new BackError('No key provided', 403));
   Models.Screen.findOne({
     where: {
-      shareKey: req.params.key
+      shareKey: req.params.key,
+      uploadBy: req.user.id
     }
   }).then(screen => {
     if (_.isNil(screen)) return next(new BackError('Screen not found', 404));
@@ -124,7 +125,8 @@ Gallery.SetScreenPrivacy = (req, res, next) => {
   { return next(new BackError('Bad parameters', 403)); }
   Models.Screen.findOne({
     where: {
-      shareKey: req.params.key
+      shareKey: req.params.key,
+      uploadBy: req.user.id
     }
   }).then(screen => {
     if (_.isNil(screen)) return next(new BackError('Screen not found', 404));
