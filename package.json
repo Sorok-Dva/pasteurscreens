@@ -70,7 +70,7 @@
     "gulp-rename": "^1.4.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-terser": "^1.2.0",
-    "nyc": "^13.0.1"
+    "nyc": "^15.0.0"
   },
   "main": "bin/www",
   "engines": {
