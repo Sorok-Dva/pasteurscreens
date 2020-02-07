@@ -1,7 +1,7 @@
 deleteAccount = () => {
   if (confirm('WARNING: This action cannot be revert. \n\nYou will NOT be able to register again with this nickname NOR this email address that is linked to it.\n\nAre you sure you want to delete your account ?')) {
     let password = $('#delPassword').val(), text;
-    $.post('/user/deleteAccount', {password}, function (data) {
+    $.post('/user/deleteAccount', { password }, function (data) {
       if (!data.error) {
         text = '<b>Thank you</b> !' +
           '<br><br>The deletion of the account will be done the next time you log out of the site.' +
@@ -15,13 +15,13 @@ deleteAccount = () => {
 };
 
 changePassword = () => {
-  let oldPassword = $('#oldPassword').val();
-  let newPassword = $('#newPassword').val();
-  let confNewPassword = $('#confNewPassword').val();
+  const oldPassword = $('#oldPassword').val();
+  const newPassword = $('#newPassword').val();
+  const confNewPassword = $('#confNewPassword').val();
 
   if (!isEmpty(oldPassword) && !isEmpty(newPassword) && !isEmpty(confNewPassword)) {
     $.post('/user/changePassword',
-      {oldPassword, newPassword, confNewPassword}, (data) => {
+      { oldPassword, newPassword, confNewPassword }, (data) => {
         if (data.res !== 'error' && !data.errors) {
           if (data.res === 'OK') {
             $('#oldPassword').val('');
@@ -35,8 +35,8 @@ changePassword = () => {
           }
         } else {
           if (data.errors.length > 0) {
-            let resperror = $('.ut-form-response-error');
-            let errors = data.errors;
+            const resperror = $('.ut-form-response-error');
+            const errors = data.errors;
 
             $('.ut-form-response-success').hide();
             resperror.empty();
@@ -54,13 +54,13 @@ changePassword = () => {
 };
 
 changeEmail = () => {
-  let oldEmail = $('#oldMail').val();
-  let newEmail = $('#newMail').val();
-  let confNewEmail = $('#confNewMail').val();
+  const oldEmail = $('#oldMail').val();
+  const newEmail = $('#newMail').val();
+  const confNewEmail = $('#confNewMail').val();
 
   if (!isEmpty(oldEmail) && !isEmpty(newEmail) && !isEmpty(confNewEmail)) {
     $.post('/user/changeMail',
-      {oldEmail, newEmail, confNewEmail}, (data) => {
+      { oldEmail, newEmail, confNewEmail }, (data) => {
         if (data.res !== 'error' && !data.errors) {
           if (data.res === 'OK') {
             $('#oldMail').val('');
@@ -74,8 +74,8 @@ changeEmail = () => {
           }
         } else {
           if (data.errors.length > 0) {
-            let resperror = $('.ut-form-response-error');
-            let errors = data.errors;
+            const resperror = $('.ut-form-response-error');
+            const errors = data.errors;
 
             $('.ut-form-response-success').hide();
             resperror.empty();

@@ -1,5 +1,5 @@
-let ValidatePassword = function () {
-  let rules = [{
+const ValidatePassword = function () {
+  const rules = [{
     Pattern: '[A-Z]',
     Target: 'uppercase'
   }, {
@@ -13,7 +13,7 @@ let ValidatePassword = function () {
     Target: 'symbol'
   }];
 
-  let password = $(this).val();
+  const password = $(this).val();
 
   $('#length')
     .removeClass(password.length > 8 ? 'bad-rule' : 'good-rule')
@@ -45,10 +45,10 @@ let ValidatePassword = function () {
   }
 };
 
-let ValidateConfirmPassword = function () {
-  let passwordConfirm = $(this).val();
+const ValidateConfirmPassword = function () {
+  const passwordConfirm = $(this).val();
 
-  let rules = [{
+  const rules = [{
     Pattern: (passwordConfirm === $('#password').val()),
     Target: 'same'
   }];

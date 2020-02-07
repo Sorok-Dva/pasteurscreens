@@ -47,13 +47,13 @@ Handlebars.registerHelper('number', (number) => {
  */
 Handlebars.registerHelper('rolify', (role) => {
   switch (role) {
-    case 'User': return 'Utilisateur';
-    case 'Admin': return 'Administrateur';
-    case 'admin': return 'Administrateur';
-    case 'es': return 'Établissement';
-    case 'demo': return 'Démo';
-    case 'candidate': return 'Candidat';
-    default: return role
+  case 'User': return 'Utilisateur';
+  case 'Admin': return 'Administrateur';
+  case 'admin': return 'Administrateur';
+  case 'es': return 'Établissement';
+  case 'demo': return 'Démo';
+  case 'candidate': return 'Candidat';
+  default: return role
   }
 });
 
@@ -76,28 +76,28 @@ Handlebars.registerHelper('rating', (stars, star) => {
 
 Handlebars.registerHelper('ifCond', (v1, operator, v2, options) => {
   switch (operator) {
-    case '==':
-      return v1 == v2 ? options.fn(this) : options.inverse(this);
-    case '===':
-      return v1 === v2 ? options.fn(this) : options.inverse(this);
-    case '!=':
-      return v1 != v2 ? options.fn(this) : options.inverse(this);
-    case '!==':
-      return v1 !== v2 ? options.fn(this) : options.inverse(this);
-    case '<':
-      return v1 < v2 ? options.fn(this) : options.inverse(this);
-    case '<=':
-      return v1 <= v2 ? options.fn(this) : options.inverse(this);
-    case '>':
-      return v1 > v2 ? options.fn(this) : options.inverse(this);
-    case '>=':
-      return v1 >= v2 ? options.fn(this) : options.inverse(this);
-    case '&&':
-      return v1 && v2 ? options.fn(this) : options.inverse(this);
-    case '||':
-      return v1 || v2 ? options.fn(this) : options.inverse(this);
-    default:
-      return options.inverse(this);
+  case '==':
+    return v1 == v2 ? options.fn(this) : options.inverse(this);
+  case '===':
+    return v1 === v2 ? options.fn(this) : options.inverse(this);
+  case '!=':
+    return v1 != v2 ? options.fn(this) : options.inverse(this);
+  case '!==':
+    return v1 !== v2 ? options.fn(this) : options.inverse(this);
+  case '<':
+    return v1 < v2 ? options.fn(this) : options.inverse(this);
+  case '<=':
+    return v1 <= v2 ? options.fn(this) : options.inverse(this);
+  case '>':
+    return v1 > v2 ? options.fn(this) : options.inverse(this);
+  case '>=':
+    return v1 >= v2 ? options.fn(this) : options.inverse(this);
+  case '&&':
+    return v1 && v2 ? options.fn(this) : options.inverse(this);
+  case '||':
+    return v1 || v2 ? options.fn(this) : options.inverse(this);
+  default:
+    return options.inverse(this);
   }
 });
 
@@ -143,12 +143,12 @@ Handlebars.registerHelper('countFiles', (object, type) => {
 });
 
 Handlebars.registerHelper('weekStats', (object) => {
-  let res = [];
+  const res = [];
   for (let day = 6; day >= 0; day--) {
-    let date = day === 0 ? moment().format('MMM Do YY') : moment().subtract(day, 'days').format('MMM Do YY');
+    const date = day === 0 ? moment().format('MMM Do YY') : moment().subtract(day, 'days').format('MMM Do YY');
     let isNull = true;
     object.map((user) => {
-      if (date === moment(user.createdAt).format('MMM Do YY')){
+      if (date === moment(user.createdAt).format('MMM Do YY')) {
         res.push(user.dataValues.count);
         isNull = false;
       }
@@ -161,14 +161,13 @@ Handlebars.registerHelper('weekStats', (object) => {
 Handlebars.registerHelper('repeat', function (n, block) {
   let accum = '';
   for (let i = 0; i < n; ++i)
-    accum += block.fn(i);
+  { accum += block.fn(i); }
   return accum;
 });
 
 Handlebars.registerHelper('json', function (context) {
   return JSON.stringify(context);
 });
-
 
 Handlebars.registerHelper('countInObject', (object, property, search) => {
   let count = 0;
@@ -189,7 +188,7 @@ Handlebars.registerHelper('log', function () {
 });
 /* eslint-enable no-console */
 
-Handlebars.registerHelper('breaklines', function(text) {
+Handlebars.registerHelper('breaklines', function (text) {
   text = Handlebars.Utils.escapeExpression(text);
   text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
   return new Handlebars.SafeString(text);

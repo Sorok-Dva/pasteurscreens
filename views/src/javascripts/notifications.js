@@ -1,10 +1,10 @@
 $(document).ready(function () {
   appNotifications.init();
-  $('#notificationsContainer').on('click', '.notif-li', function(event) {
+  $('#notificationsContainer').on('click', '.notif-li', function (event) {
     event.preventDefault();
     event.stopPropagation();
 
-    let notifId = $(event.currentTarget).attr('data-notif-id');
+    const notifId = $(event.currentTarget).attr('data-notif-id');
     $('#notificationsContainer').hide();
 
     $.get(`/api/user/notification/${notifId}`, (data) => {
@@ -17,71 +17,71 @@ $(document).ready(function () {
     });
   });
 
-  $('#notif-back').click(function(event) {
+  $('#notif-back').click(function (event) {
     event.preventDefault();
     event.stopPropagation();
     $('#notificationsContainer').show();
     $('#notificationData').hide();
     $('#notif-see-all').show();
     $('#notif-back').hide();
-    let id = $('#notif-back').attr('data-id');
+    const id = $('#notif-back').attr('data-id');
     $.put('/api/user/notification/read', { _csrf, id }, (data) => {
       count--;
       appNotifications.loadAll();
     });
   });
 
-  $('#notificationData').on('click', '.notificationCTA', function(event) {
+  $('#notificationData').on('click', '.notificationCTA', function (event) {
     event.preventDefault();
     event.stopPropagation();
-    let target = $(event.target);
-    let action = target.attr('data-action');
-    let availability = target.attr('data-availability');
+    const target = $(event.target);
+    const action = target.attr('data-action');
+    const availability = target.attr('data-availability');
     switch (action) {
-      case 'nc/availability':
-        let ncid = target.attr('data-ncid');
-        $.post(`/api/candidate/nc/${ncid}/availability`, { _csrf, availability}, (data) => {
-          if (data === 'done') {
-            notification({
-              icon: 'check-circle',
-              type: 'success',
-              title: 'Disponibilité enregistrée.',
-              message: `Nous venons d'informer l'établissement de votre disponibilité.`
-            });
-            $('#notif-back').trigger('click');
-          }
-        }).catch((xhr, status, error) => catchError(xhr, status, error));
-        break;
-      case 'conf/availability':
-        let confid = target.attr('data-confid');
-        $.post(`/api/candidate/conference/${confid}/availability`, { _csrf, availability}, (data) => {
-          if (data === 'done') {
-            notification({
-              icon: 'check-circle',
-              type: 'success',
-              title: 'Disponibilité enregistrée.',
-              message: `Nous venons d'informer l'établissement de votre disponibilité pour cet entretien.`
-            });
-            $('#notif-back').trigger('click');
-          }
-        }).catch((xhr, status, error) => catchError(xhr, status, error));
-        break;
+    case 'nc/availability':
+      const ncid = target.attr('data-ncid');
+      $.post(`/api/candidate/nc/${ncid}/availability`, { _csrf, availability }, (data) => {
+        if (data === 'done') {
+          notification({
+            icon: 'check-circle',
+            type: 'success',
+            title: 'Disponibilité enregistrée.',
+            message: 'Nous venons d\'informer l\'établissement de votre disponibilité.'
+          });
+          $('#notif-back').trigger('click');
+        }
+      }).catch((xhr, status, error) => catchError(xhr, status, error));
+      break;
+    case 'conf/availability':
+      const confid = target.attr('data-confid');
+      $.post(`/api/candidate/conference/${confid}/availability`, { _csrf, availability }, (data) => {
+        if (data === 'done') {
+          notification({
+            icon: 'check-circle',
+            type: 'success',
+            title: 'Disponibilité enregistrée.',
+            message: 'Nous venons d\'informer l\'établissement de votre disponibilité pour cet entretien.'
+          });
+          $('#notif-back').trigger('click');
+        }
+      }).catch((xhr, status, error) => catchError(xhr, status, error));
+      break;
     }
   })
 });
 
 let count = 0;
 let lastCount = 0;
-let appNotifications = {
+const appNotifications = {
   init: () => {
-    $("#notificationsBadge").hide();
-    $("#notificationAucune").hide();
+    $('#notificationsBadge').hide();
+    $('#notificationAucune').hide();
 
     // bind click on notifications
-    $("#notifications-dropdown").on('click', function () {
-      let open = $("#notifications-dropdown").attr("aria-expanded");
+    $('#notifications-dropdown').on('click', function () {
+      const open = $('#notifications-dropdown').attr('aria-expanded');
 
-      if (open === "false") {
+      if (open === 'false') {
         appNotifications.loadAll();
       }
     });
@@ -105,43 +105,43 @@ let appNotifications = {
   },
   badgeLoadingMask: function (show) {
     if (show === true) {
-      $("#notificationsBadge").html(appNotifications.badgeSpinner);
-      $("#notificationsBadge").show();
+      $('#notificationsBadge').html(appNotifications.badgeSpinner);
+      $('#notificationsBadge').show();
       // Mobile
-      $("#notificationsBadgeMobile").html(count);
-      $("#notificationsBadgeMobile").show();
+      $('#notificationsBadgeMobile').html(count);
+      $('#notificationsBadgeMobile').show();
     }
     else {
-      $("#notificationsBadge").html(count);
+      $('#notificationsBadge').html(count);
       if (count > 0) {
-        $("#notificationsIcon").removeClass("fa-bell-o");
-        $("#notificationsIcon").addClass("fa-bell");
-        $("#notificationsBadge").show();
+        $('#notificationsIcon').removeClass('fa-bell-o');
+        $('#notificationsIcon').addClass('fa-bell');
+        $('#notificationsBadge').show();
         // Mobile
-        $("#notificationsIconMobile").removeClass("fa-bell-o");
-        $("#notificationsIconMobile").addClass("fa-bell");
-        $("#notificationsBadgeMobile").show();
+        $('#notificationsIconMobile').removeClass('fa-bell-o');
+        $('#notificationsIconMobile').addClass('fa-bell');
+        $('#notificationsBadgeMobile').show();
       }
       else {
-        $("#notificationsIcon").addClass("fa-bell-o");
-        $("#notificationsBadge").hide();
+        $('#notificationsIcon').addClass('fa-bell-o');
+        $('#notificationsBadge').hide();
         // Mobile
-        $("#notificationsIconMobile").addClass("fa-bell-o");
-        $("#notificationsBadgeMobile").hide();
+        $('#notificationsIconMobile').addClass('fa-bell-o');
+        $('#notificationsBadgeMobile').hide();
       }
     }
   },
   loadingMask: function (show) {
     if (show === true) {
-      $("#notificationAucune").hide();
-      $("#notificationsLoader").show();
+      $('#notificationAucune').hide();
+      $('#notificationsLoader').show();
     } else {
-      $("#notificationsLoader").hide();
+      $('#notificationsLoader').hide();
       if (count > 0) {
-        $("#notificationAucune").hide();
+        $('#notificationAucune').hide();
       }
       else {
-        $("#notificationAucune").show();
+        $('#notificationAucune').show();
       }
     }
   },
@@ -151,7 +151,7 @@ let appNotifications = {
     $.get('/api/user/notifications', data => {
       lastCount = count;
       count = data.count;
-      $("#notificationsBadge").html(data.count);
+      $('#notificationsBadge').html(data.count);
       appNotifications.badgeLoadingMask(false);
       appNotifications.load(data.rows);
     });
@@ -165,10 +165,10 @@ let appNotifications = {
 
     notifications.forEach(notif => {
       let template = $('#notificationTemplate').html();
-      template = template.replace("{{id}}", notif.id);
-      template = template.replace("{{image}}", notif.image);
-      template = template.replace("{{subject}}", notif.subject);
-      template = template.replace("{{date}}", moment(notif.createdAt).fromNow());
+      template = template.replace('{{id}}', notif.id);
+      template = template.replace('{{image}}', notif.image);
+      template = template.replace('{{subject}}', notif.subject);
+      template = template.replace('{{date}}', moment(notif.createdAt).fromNow());
       $('#notificationsContainer').append(template);
     });
     // bind mark as read
@@ -178,7 +178,7 @@ let appNotifications = {
     appNotifications.loadingMask(false);
 
     // enable button
-    $("#notifications-dropdown").prop("disabled", false);
+    $('#notifications-dropdown').prop('disabled', false);
   },
   // Set notification as read
   markAsRead: (event) => {
@@ -187,8 +187,8 @@ let appNotifications = {
     event.stopPropagation();
 
     // Remove notification
-    let elem = $(event.currentTarget).parent('.dropdown-notification');
-    let id = elem.attr('data-notif-id');
+    const elem = $(event.currentTarget).parent('.dropdown-notification');
+    const id = elem.attr('data-notif-id');
     elem.remove();
     $.put('/api/user/notification/read', { _csrf, id }, (data) => {
       count--;
@@ -202,7 +202,7 @@ let appNotifications = {
     event.stopPropagation();
 
     // Suppression de la notification
-    elem.parent('.dropdown-notification').removeClass("notification-unread");
+    elem.parent('.dropdown-notification').removeClass('notification-unread');
     elem.remove();
 
     // On supprime le focus

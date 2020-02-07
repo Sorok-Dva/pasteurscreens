@@ -1,8 +1,8 @@
 let activeBtnLoader;
-let _csrf = $('meta[name="csrf-token"]').attr('content');
+const _csrf = $('meta[name="csrf-token"]').attr('content');
 
-jQuery.each([ 'put', 'patch', 'delete' ], (i, method) => {
-  jQuery[ method ] = (url, data, callback, type) => {
+jQuery.each(['put', 'patch', 'delete'], (i, method) => {
+  jQuery[method] = (url, data, callback, type) => {
     if (jQuery.isFunction(data)) {
       type = type || callback;
       callback = data;
@@ -19,8 +19,8 @@ jQuery.each([ 'put', 'patch', 'delete' ], (i, method) => {
   };
 });
 
-let debug = (data) => {
-  let debugEnable = $('meta[name="debug"]').attr('content');
+const debug = (data) => {
+  const debugEnable = $('meta[name="debug"]').attr('content');
   if (debugEnable === 'false') return false;
   console.time('debug finished in');
   console.log('%c [DEBUG] :', 'color: orange; font-weight: bold', data);
@@ -29,11 +29,11 @@ let debug = (data) => {
   console.timeEnd('debug finished in');
 };
 
-let notification = (opts) => {
+const notification = (opts) => {
   $.notify({
     icon: `fal fa-${opts.icon}`,
     title: `<b>${opts.title}</b>`,
-    message: `${opts.message || ''}`,
+    message: `${opts.message || ''}`
   }, {
     type: `${opts.type}`,
     allow_dismiss: true,
@@ -55,7 +55,7 @@ let notification = (opts) => {
   });
 };
 
-let errorsHandler = data => {
+const errorsHandler = data => {
   debug(data);
   if (_.isNil(data.responseJSON)) {
     notification({
@@ -65,7 +65,7 @@ let errorsHandler = data => {
       message: data.responseText
     });
   } else {
-    let error = data === undefined ? null : data.responseJSON;
+    const error = data === undefined ? null : data.responseJSON;
     if (error.errors) {
       error.errors.forEach((e, i) => {
         notification({
@@ -76,8 +76,8 @@ let errorsHandler = data => {
         });
       });
     } else {
-      let message = error.sequelizeError ?
-        `<b>${errors.sequelizeError.name}</b>: ${errors.sequelizeError.original.sqlMessage}`
+      let message = error.sequelizeError
+        ? `<b>${errors.sequelizeError.name}</b>: ${errors.sequelizeError.original.sqlMessage}`
         : error.message || error || 'Unknown Error';
       message = (typeof message === 'object') ? message.name : message;
       notification({
@@ -90,49 +90,49 @@ let errorsHandler = data => {
   }
 };
 
-let catchError = (xhr, status, error) => {
-  debug({xhr, status, error});
+const catchError = (xhr, status, error) => {
+  debug({ xhr, status, error });
   let title, message;
   switch (error) {
-    case 'Bad Request':
-      title = 'Bad Request';
-      break;
-    case 'Internal Server Error':
-      title = 'An internal server error occurred.';
-      if (xhr.responseJSON) {
-        if (typeof xhr.responseJSON.message === 'object') {
-          switch (xhr.responseJSON.message.name) {
-            case 'SequelizeForeignKeyConstraintError':
-              message = `ForeignKeyConstraintError: ${xhr.responseJSON.message.original.sqlMessage}`;
-              break;
-            default:
-              message = xhr.responseJSON.message.sqlMessage;
-          }
-        } else if (typeof xhr.responseJSON.message === 'string') {
-          message = xhr.responseJSON.message;
+  case 'Bad Request':
+    title = 'Bad Request';
+    break;
+  case 'Internal Server Error':
+    title = 'An internal server error occurred.';
+    if (xhr.responseJSON) {
+      if (typeof xhr.responseJSON.message === 'object') {
+        switch (xhr.responseJSON.message.name) {
+        case 'SequelizeForeignKeyConstraintError':
+          message = `ForeignKeyConstraintError: ${xhr.responseJSON.message.original.sqlMessage}`;
+          break;
+        default:
+          message = xhr.responseJSON.message.sqlMessage;
         }
+      } else if (typeof xhr.responseJSON.message === 'string') {
+        message = xhr.responseJSON.message;
       }
-      break;
-    case 'Forbidden':
-      title = 'Access not allowed :';
-      message = 'You can\'t access this page.';
-      break;
-    case 'Not Found':
-      title = xhr.responseJSON ? xhr.responseJSON.message : 'Page not found.';
-      break;
-    case 'Request Time-out':
-      title = 'Request Time-out.';
-      break;
-    case 'Unauthorized':
-      title = 'Unauthorized.';
-      break;
-    case '':
-      title = 'Connection lost:';
-      message = 'Connection between you and AO Files is actually unavailable. Please take a look at your connection or retry in few minutes.';
-      break;
-    default:
-      title = xhr.responseJSON ? xhr.responseJSON.name : `Unknown Error (HTTP Error ${error})`;
-      message = xhr.responseJSON ? xhr.responseJSON.message : null;
+    }
+    break;
+  case 'Forbidden':
+    title = 'Access not allowed :';
+    message = 'You can\'t access this page.';
+    break;
+  case 'Not Found':
+    title = xhr.responseJSON ? xhr.responseJSON.message : 'Page not found.';
+    break;
+  case 'Request Time-out':
+    title = 'Request Time-out.';
+    break;
+  case 'Unauthorized':
+    title = 'Unauthorized.';
+    break;
+  case '':
+    title = 'Connection lost:';
+    message = 'Connection between you and AO Files is actually unavailable. Please take a look at your connection or retry in few minutes.';
+    break;
+  default:
+    title = xhr.responseJSON ? xhr.responseJSON.name : `Unknown Error (HTTP Error ${error})`;
+    message = xhr.responseJSON ? xhr.responseJSON.message : null;
   }
   if (!_.isNil(title)) {
     notification({
@@ -144,38 +144,50 @@ let catchError = (xhr, status, error) => {
   }
 };
 
-let loadTemplate = (url, data, callback) => {
+const loadTemplate = (url, data, callback) => {
   if (data.partials) {
     for (let i = 0; i < data.partials.length; i++) {
-      $.ajax({ url: `/views/partials/${data.partials[i]}.hbs`, cache: true, success: (source) => {
-        Handlebars.registerPartial(`${data.partials[i]}`, source);
-      }}).catch((xhr, status, error) => {
+      $.ajax({
+        url: `/views/partials/${data.partials[i]}.hbs`,
+        cache: true,
+        success: (source) => {
+          Handlebars.registerPartial(`${data.partials[i]}`, source);
+        }
+      }).catch((xhr, status, error) => {
         $('#loadingModal').modal('hide');
         catchError(xhr, status, error)
       });
     }
   }
-  $.ajax({ url, cache: true, success: (source) => {
-    if (data.modal) {
-      $.ajax({ url: `/views/modals/partials/${data.modal}.hbs`, cache: true, success: (modal) => {
-        Handlebars.registerPartial(`${data.modal}`, modal);
-        let template = Handlebars.compile(source);
-          return callback(template(data));
-      }}).catch((xhr, status, error) => {
-        $('#loadingModal').modal('hide');
-        catchError(xhr, status, error);
-      });
-    } else {
-      let template = Handlebars.compile(source);
-      return callback(template(data));
+  $.ajax({
+    url,
+    cache: true,
+    success: (source) => {
+      if (data.modal) {
+        $.ajax({
+          url: `/views/modals/partials/${data.modal}.hbs`,
+          cache: true,
+          success: (modal) => {
+            Handlebars.registerPartial(`${data.modal}`, modal);
+            const template = Handlebars.compile(source);
+            return callback(template(data));
+          }
+        }).catch((xhr, status, error) => {
+          $('#loadingModal').modal('hide');
+          catchError(xhr, status, error);
+        });
+      } else {
+        const template = Handlebars.compile(source);
+        return callback(template(data));
+      }
     }
-  }}).catch((xhr, status, error) => {
+  }).catch((xhr, status, error) => {
     $('#loadingModal').modal('hide');
     catchError(xhr, status, error);
   });
 };
 
-let createModal = (opts, callback) => {
+const createModal = (opts, callback) => {
   $('#loadingModal').modal({
     backdrop: 'static',
     keyboard: false
@@ -217,9 +229,9 @@ $(document).ready(function () {
   });
 
   $(document).on('click', '.btn-loader', (e) => {
-    let $this = $(e.target);
+    const $this = $(e.target);
     activeBtnLoader = $this;
-    let loadingText = $this.attr('data-loading-text');
+    const loadingText = $this.attr('data-loading-text');
     if ($this.html() !== loadingText) {
       $this.data('original-text', $this.html());
       $this.html(loadingText);
@@ -229,12 +241,12 @@ $(document).ready(function () {
     }, 10000);
   });
 
-  //Initialize tooltips
+  // Initialize tooltips
   $('.nav-tabs > li a[title]').tooltip();
 
-  //Wizard
+  // Wizard
   $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-    let $target = $(e.target);
+    const $target = $(e.target);
     if ($target.parent().hasClass('disabled')) {
       return false;
     }
