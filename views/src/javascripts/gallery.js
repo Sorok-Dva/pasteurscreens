@@ -49,7 +49,7 @@ const deleteScreen = (key) => {
 };
 
 const changePrivacy = (privacy, key) => {
-  const route = privacy === 1 || true ? 'public' : 'private';
+  const route = privacy === 1 || privacy === true ? 'public' : 'private';
   $.post(`/screens/set/${route}/${key}`, { _csrf }, result => {
     if (result.state === 'privacy updated') {
       if (route === 'public') {
