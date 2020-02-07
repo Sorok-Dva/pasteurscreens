@@ -19,7 +19,7 @@
             <input id="screenTitle" type="text" placeholder="Title" class="input-md">
             <select id="screenPrivacy" class="input-md">
               <option value="false">Public</option>
-              {{#if session}}
+              {{#if user}}
                 <option value="true">Private</option>
               {{/if}}
             </select>
