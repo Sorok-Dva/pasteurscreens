@@ -61,5 +61,17 @@
       "form_submit_btn_loading_text": "Registration in progress",
       "form_submit_btn": "Register"
     }
+  },
+  "flash": {
+    "error": {
+      "UNKNOWN_USER": "Unknown User",
+      "ACCOUNT_NOT_VALIDATED": "You must validate your account. Check your emails (SPAMS).",
+      "WRONG_PASSWORD": "Wrong Password.",
+      "ALREADY_LOGGED": "You're already connected.",
+      "NOT_CONNECTED": "You're not connected",
+      "MUT_BE_CONNECTED": "You must be connected",
+      "TOO_MANY_LOGIN_TRY": "Trop de tentatives de connexion sur ce compte. Veuillez réessayer dans 15 minutes.",
+      "FORBIDDEN": "Forbidden Access."
+    }
   }
 }

@@ -1,13 +1,13 @@
 const chalk = require('chalk');
 
 const killServer = () => {
-  let e = 'Server killed, please resolve error and restart it.';
+  const e = 'Server killed, please resolve error and restart it.';
   console.log('%s %s', chalk.keyword('orange')('[WARN]'), chalk.hex('#000').bgKeyword('red')(e));
   process.exit();
 };
 
 module.exports = {
-  'roles': ['SuperAdmin', 'Admin'],
+  roles: ['SuperAdmin', 'Admin'],
   __d: e => console.log('%s %s', chalk.yellow('[DEBUG]'), chalk.hex('#000').bgYellow(e)),
   __i: e => console.log('%s %s', chalk.green('[INFO]'), chalk.hex('#000').bgGreen(e)),
   __l: e => console.log('%s %s', chalk.cyan('[MySQL LOGGER]'), chalk.cyan(e)),

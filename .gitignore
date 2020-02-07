@@ -64,3 +64,6 @@ gen
 
 # Git Metrics
 /.gtm/
+
+/public/assets/dist
+/public/assets/images/upload

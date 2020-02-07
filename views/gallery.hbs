@@ -1,0 +1,60 @@
+<div class="container" style="margin-top: 75px;">
+  <div class="row">
+    <div class="col-lg-12 my-3">
+      <div class="pull-right">
+        <div class="btn-group">
+          <button class="btn btn-info" id="list">
+            List View
+          </button>
+          <button class="btn btn-danger" id="grid">
+            Grid View
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="screens" class="row view-group">
+    {{#each captures as |capture|}}
+      <div class="item col-xs-4 col-lg-4" data-main-div="{{capture.dataValues.shareKey}}">
+        <div class="thumbnail card">
+          <div class="imgFrame center-block"
+               data-key="{{capture.dataValues.shareKey}}"
+               onClick="return showScreen('{{capture.dataValues.shareKey}}', {{capture.dataValues.private}})">
+            <span class="helper"></span>
+            <img class="img-thumbnail gallery-img" src="{{capture.dataValues.path}}" alt=""/>
+          </div>
+          <div class="caption card-body">
+            <h5 class="group card-title inner list-group-item-heading">{{capture.dataValues.title}}</h5>
+            <p class="group inner list-group-item-text">
+              {{dateFormat capture.dataValues.createdAt "DD/MM/YYYY HH:mm:ss"}}
+            </p>
+            <div class="row">
+              <div class="col-xs-12 col-md-12">
+                <button class="btn btn-sm btn-success copyShareLink"
+                        {{#ifCond capture.dataValues.private '===' 1}}style="display: none!important;"{{/ifCond}}
+                        data-key="{{capture.dataValues.shareKey}}"
+                        data-clipboard-text="https://purs.tk/-{{capture.dataValues.shareKey}}">
+                  Copy Link
+                </button>
+                <button class="btn btn-sm
+{{#ifCond capture.dataValues.private '===' 1}}btn-success{{else}}btn-warning{{/ifCond}} changePrivacy"
+                        data-key="{{capture.dataValues.shareKey}}"
+                        onclick="return changePrivacy({{capture.dataValues.private}}, '{{capture.dataValues.shareKey}}')">
+                  {{#ifCond capture.dataValues.private '===' 1}}Set public{{else}}Set private{{/ifCond}}
+                </button>
+                <button class="btn btn-sm btn-danger"
+                        data-action="delete"
+                        data-key="{{capture.dataValues.shareKey}}"
+                        onclick="return askDelete('{{capture.dataValues.shareKey}}')">Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<script src="/assets/js/clipboard.min.js"></script>
+<script src="/assets/dist/js/gallery.min.js"></script>

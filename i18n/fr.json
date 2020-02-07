@@ -61,5 +61,17 @@
       "form_submit_btn_loading_text": "Validation de l'inscription",
       "form_submit_btn": "S'inscrire"
     }
+  },
+  "flash": {
+    "error": {
+      "UNKNOWN_USER": "Utilisateur inconnu.",
+      "ACCOUNT_NOT_VALIDATED": "Vous devez valider votre compte. Veuillez vérifier vos emails (SPAM y compris).",
+      "WRONG_PASSWORD": "Mot de passe invalide.",
+      "ALREADY_LOGGED": "Vous êtes déjà connecté.",
+      "NOT_CONNECTED": "Vous n'êtes pas connecté.",
+      "MUT_BE_CONNECTED": "Vous devez être connecté.",
+      "TOO_MANY_LOGIN_TRY": "Trop de tentatives de connexion sur ce compte. Veuillez réessayer dans 15 minutes.",
+      "FORBIDDEN": "Accès interdit."
+    }
   }
 }

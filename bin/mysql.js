@@ -24,7 +24,7 @@ exports.use = () => {
 exports.select = query => new Promise((resolve, reject) => {
   if (!query || !query.select || !query.from) throw new Error('Invalid request');
 
-  let request = [
+  const request = [
     `SELECT ${query.select} FROM \`${query.from}\` `,
     query.as ? `AS ${query.as} ` : '',
     query.join ? `JOIN ${query.join.table} ON ${query.join.on} ` : '',
@@ -43,7 +43,7 @@ exports.select = query => new Promise((resolve, reject) => {
 
 exports.insert = query => new Promise((resolve, reject) => {
   if (!query || !query.into || !query.data) throw new Error('Invalid request');
-  let request = `INSERT INTO ${query.into} SET ?`;
+  const request = `INSERT INTO ${query.into} SET ?`;
 
   exports.use().query(request, query.data, (error, result) => {
     config.__l(`${request} ${JSON.stringify(query.data)}`);

@@ -1,0 +1,19 @@
+<div class="col-12" id="flashContainer">
+  {{#if success_msg}}
+    <div class="alert alert-success">{{success_msg}}</div>
+  {{/if}}
+  {{#if error_msg}}
+    <div class="alert alert-danger">{{error_msg}}</div>
+  {{/if}}
+  {{#each errors as |error|}}
+    <div class="alert alert-danger">
+      {{#if error.param}}{{error.param}} field {{/if}}
+      {{error.msg}}
+    </div>
+  {{/each}}
+  {{#if sequelizeError}}
+    {{#each sequelizeError.errors as |error|}}
+      <div class="alert alert-danger">{{error.message}}</div>
+    {{/each}}
+  {{/if}}
+</div>

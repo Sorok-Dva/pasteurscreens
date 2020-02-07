@@ -1,55 +1,75 @@
+const { Authentication, Express, HTTPValidation } = require('../middlewares');
+const { Gallery, Render, User } = require('../components');
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const rateLimit = require('express-rate-limit');
+require('../config/passport');
 
-const User = require('../models/user');
+/* const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 min window
+  max: 15, // start blocking after 3 requests
+  handler: (req, res, next) => {
+    return res.status(403).send({ error: 'Trop de tentatives de connexion, veuillez réessayer dans quelques minutes.' });
+  },
+  keyGenerator: function (req /!*, res*!/) {
+    return req.body.username;
+  },
+}); */
 
-const IndexController = require('../controllers/index');
+router.get('/', Render.Index);
 
-router.get('/', IndexController.getIndex);
+router.get('/gallery',
+  Authentication.ensureAuthenticated,
+  Gallery.GetScreens
+);
 
-router.get('/gallery', User.ensureAuthenticated, IndexController.getGallery);
+router.get(
+  '/register',
+  Authentication.ensureIsNotAuthenticated,
+  Render.Register
+).post('/register/',
+  Authentication.ensureIsNotAuthenticated,
+  HTTPValidation.UserController.create,
+  User.Main.verifyEmailAvailability,
+  User.Main.create);
 
-router.get('/register', User.ensureNotAuthenticated, IndexController.getRegister)
-  .post('/register', User.ensureNotAuthenticated, IndexController.postRegister);
+/**
+ * @Route('/login') POST;
+ * Send Login Form
+ */
+router.get('/login',
+  Authentication.ensureIsNotAuthenticated,
+  Render.Login
+).post('/login',
+  // Authentication.ensureIsNotAuthenticated,
+  // HTTPValidation.IndexController.login,
+  // loginLimiter,
+  Express.passportAuthentication,
+  Render.Index
+).post('/login/magic-link',
+  Authentication.ensureIsNotAuthenticated,
+  // HTTPValidation.UserController.ApiVerifyEmailAvailability,
+  User.Main.SendMagicLinkLogin
+).post('/login/magic-link/:key',
+  Authentication.ensureIsNotAuthenticated,
+  User.Main.MagicLinkLogin);
 
-router.get('/login', User.ensureNotAuthenticated, IndexController.getLogin)
-  .post('/login', User.ensureNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/', failureRedirect: '/?error=login', failureFlash: true
-  }), IndexController.postLogin);
+router.get('/logout',
+  Authentication.ensureAuthenticated,
+  Render.Logout);
 
-router.get('/logout', User.ensureAuthenticated, IndexController.getLogout);
+router.get('/-:key', Gallery.getScreen);
+router.post('/screens/save', Gallery.saveScreen);
+router.post('/screens/delete/:key', Gallery.deleteScreen);
+router.post('/screens/set/:privacy/:key', Gallery.SetScreenPrivacy);
 
-router.post('/forgot', User.ensureNotAuthenticated, IndexController.postForgot);
+/* router.post('/forgot', User.ensureNotAuthenticated, IndexController.postForgot);
 
 router.get('/restore', User.ensureAuthenticated, IndexController.getRestore);
 
 router.get('/reset/:token', User.ensureNotAuthenticated, IndexController.getResetPassword)
   .post('/reset/:token', User.ensureNotAuthenticated, IndexController.postResetPassword);
 
-router.post('/screens/save', IndexController.postSaveScreen);
-router.post('/screens/delete/:key', IndexController.postDeleteScreen);
-router.post('/screens/set/:privacy/:key', IndexController.postSetPrivacyScreen);
-
-router.get('/-:key', IndexController.getScreen);
-
-passport.use(new LocalStrategy((nickname, password, done) => {
-  User.getUser(nickname, user => {
-    if (!user) return done(null, false, {message: 'Unknown User'});
-    User.comparePassword(password, user.password, (err, isMatch) => {
-      if (err) throw err;
-      if (isMatch) {
-        return done(null, user);
-      } else {
-        return done(null, false, {message: 'Invalid password'});
-      }
-    });
-  });
-}));
-
-passport.serializeUser((user, done) => done(null, user.id));
-
-passport.deserializeUser((id, done) => User.getUserById(id, (err, user) => done(err, user)));
+ */
 
 module.exports = router;
