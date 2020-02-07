@@ -16,7 +16,6 @@ Gallery.GetScreens = (req, res, next) => {
     where: { uploadBy: id, deletedAt: null },
     order: [['createdAt', 'DESC']]
   }).then(captures => {
-    console.log(captures);
     return res.render('gallery', { captures });
   }).catch(error => next(new BackError(error)));
 };
