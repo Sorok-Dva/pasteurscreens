@@ -31,16 +31,16 @@
             <div class="row">
               <div class="col-xs-12 col-md-12">
                 <button class="btn btn-sm btn-success copyShareLink"
-                        {{#ifCond capture.dataValues.private '===' 1}}style="display: none!important;"{{/ifCond}}
+                        {{#ifCond capture.dataValues.private '==' 1}}style="display: none!important;"{{/ifCond}}
                         data-key="{{capture.dataValues.shareKey}}"
                         data-clipboard-text="https://purs.tk/-{{capture.dataValues.shareKey}}">
                   Copy Link
                 </button>
                 <button class="btn btn-sm
-{{#ifCond capture.dataValues.private '===' 1}}btn-success{{else}}btn-warning{{/ifCond}} changePrivacy"
+{{#ifCond capture.dataValues.private '==' 1}}btn-success{{else}}btn-warning{{/ifCond}} changePrivacy"
                         data-key="{{capture.dataValues.shareKey}}"
                         onclick="return changePrivacy({{capture.dataValues.private}}, '{{capture.dataValues.shareKey}}')">
-                  {{#ifCond capture.dataValues.private '===' 1}}Set public{{else}}Set private{{/ifCond}}
+                  {{#ifCond capture.dataValues.private '==' 1}}Set public{{else}}Set private{{/ifCond}}
                 </button>
                 <button class="btn btn-sm btn-danger"
                         data-action="delete"
