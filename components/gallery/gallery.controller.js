@@ -1,7 +1,7 @@
 const __ = process.cwd();
 const _ = require('lodash');
-const {validationResult} = require('express-validator');
-const {BackError} = require(`${__}/helpers/back.error`);
+const { validationResult } = require('express-validator');
+const { BackError } = require(`${__}/helpers/back.error`);
 const Models = require(`${__}/orm/models`);
 const shortid = require('shortid');
 const Buffer = require('safe-buffer').Buffer;
@@ -10,10 +10,10 @@ const fs = require('fs');
 const Gallery = {};
 
 Gallery.GetScreens = (req, res, next) => {
-  const {id} = req.user;
+  const { id } = req.user;
 
   Models.Screen.findAll({
-    where: {uploadBy: id, deletedAt: null},
+    where: { uploadBy: id, deletedAt: null },
     order: [['createdAt', 'DESC']]
   }).then(captures => {
     console.log(captures);
@@ -23,7 +23,7 @@ Gallery.GetScreens = (req, res, next) => {
 
 Gallery.saveScreen = (req, res, next) => {
   if (req.body.size > 10485760) {
-    return res.status(200).json({state: 'Screenshot too large, limited to 10mo'});
+    return res.status(200).json({ state: 'Screenshot too large, limited to 10mo' });
   }
   // Decoding base-64 image
   // Source: http://stackoverflow.com/questions/20267939/nodejs-write-base64-image-file
@@ -32,7 +32,7 @@ Gallery.saveScreen = (req, res, next) => {
     const response = {};
 
     if (matches.length !== 3) {
-      return res.status(200).json({state: 'Invalid input string'});
+      return res.status(200).json({ state: 'Invalid input string' });
     }
 
     response.type = matches[1];
@@ -54,7 +54,7 @@ Gallery.saveScreen = (req, res, next) => {
   const userUploadedImagePath = userUploadedFeedMessagesLocation + uniqueRandomImageName + '.' + imageTypeDetected[1];
 
   // Save decoded binary image to diskcon
-  fs.writeFile(userUploadedImagePath, imageBuffer.data, {encoding: 'base64'}, err => {
+  fs.writeFile(userUploadedImagePath, imageBuffer.data, { encoding: 'base64' }, err => {
     if (err) return next(new BackError(err));
     Models.Screen.create({
       uploadBy: req.user ? req.user.id : -1,
@@ -113,7 +113,7 @@ Gallery.deleteScreen = (req, res, next) => {
     fs.unlink(`${__}/public/${screen.path}`, err => {
       screen.path = null;
       screen.deletedAt = new Date();
-      screen.save().then(() =>  res.status(200).json({ state: 'deleted' }))
+      screen.save().then(() => res.status(200).json({ state: 'deleted' }))
         .catch(error => next(new BackError(error)));
     });
   });
@@ -122,7 +122,7 @@ Gallery.deleteScreen = (req, res, next) => {
 Gallery.SetScreenPrivacy = (req, res, next) => {
   if (_.isNil(req.params.key)) return next(new BackError('No key provided', 403));
   if (req.params.privacy !== 'public' && req.params.privacy !== 'private')
-    return next(new BackError('Bad parameters', 403));
+  { return next(new BackError('Bad parameters', 403)); }
   Models.Screen.findOne({
     where: {
       shareKey: req.params.key
@@ -135,6 +135,5 @@ Gallery.SetScreenPrivacy = (req, res, next) => {
       .catch(error => next(new BackError(error)));
   });
 };
-
 
 module.exports = Gallery;

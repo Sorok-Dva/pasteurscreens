@@ -10,7 +10,7 @@ passport.use(new LocalStrategy({ passReqToCallback: true }, (req, email, passwor
     attributes: ['id', 'password', 'email', 'role', 'validated']
   }).then(user => {
     if (!user) return done(null, false, req.flash('error_msg', req.i18n_texts.flash.error.UNKNOWN_USER));
-    //if (!user.validated) return done(null, false, req.flash('error_msg', req.i18n_texts.flash.error.ACCOUNT_NOT_VALIDATED));
+    // if (!user.validated) return done(null, false, req.flash('error_msg', req.i18n_texts.flash.error.ACCOUNT_NOT_VALIDATED));
     UserComponent.Main.comparePassword(password, user.dataValues.password, (err, isMatch) => {
       if (err) return done(null, false, { error: err });
       if (isMatch) {

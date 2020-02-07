@@ -17,10 +17,10 @@ const JS_DST = './public/assets/dist/js';
  * @task clean
  * cleans the destination directory of old files
  */
-let clean = () => src(DST_PATH + '/*').pipe(cleanFolder());
+const clean = () => src(DST_PATH + '/*').pipe(cleanFolder());
 
 // Watch changes on all *.css files and trigger buildStyles() at the end.
-let watchCss = () => {
+const watchCss = () => {
   watch(
     [CSS_SRC],
     { events: 'all', ignoreInitial: false },
@@ -28,7 +28,7 @@ let watchCss = () => {
   );
 };
 
-let watchJs = () => {
+const watchJs = () => {
   watch(
     [JS_SRC_BASE],
     { events: 'all', ignoreInitial: false },
@@ -36,7 +36,7 @@ let watchJs = () => {
   );
 };
 
-let buildStyles = () => {
+const buildStyles = () => {
   if (Env.current === 'development') {
     return src(CSS_SRC)
       .pipe(cleanCSS())
@@ -50,7 +50,7 @@ let buildStyles = () => {
   }
 };
 
-let buildScripts = () => {
+const buildScripts = () => {
   if (Env.current === 'development') {
     return src([JS_SRC_BASE, JS_SRC_SUBFOLDERS])
       .pipe(sourcemaps.init())
@@ -64,7 +64,6 @@ let buildScripts = () => {
       .pipe(rename({ suffix: '.min' }))
       .pipe(dest(JS_DST));
   }
-
 };
 /*
 *

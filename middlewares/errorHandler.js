@@ -42,7 +42,7 @@ module.exports = {
     }
     next(err);
   },
-  notFoundError: (req, res, next) => res.render('error', { error: 'Page not found'}),
+  notFoundError: (req, res, next) => res.render('error', { error: 'Page not found' }),
   api: (err, req, res, next) => { // eslint-disable-line no-unused-vars
     let status = err.status || err.statusCode || 500;
     if (status < 400) status = 500;
