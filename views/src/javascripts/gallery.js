@@ -26,7 +26,7 @@ clipboard.on('success', e => {
   e.clearSelection();
 });
 const showScreen = (key, privacy) => {
-  const url = privacy === 1 ? 'https://pasteurscreens.tk' : 'https://purs.tk';
+  const url = privacy === true ? 'https://pasteurscreens.tk' : 'https://purs.tk';
   $(location).attr('href', `${url}/-${key}`);
 };
 

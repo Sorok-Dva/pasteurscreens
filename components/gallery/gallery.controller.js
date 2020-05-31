@@ -1,6 +1,5 @@
 const __ = process.cwd();
 const _ = require('lodash');
-const { validationResult } = require('express-validator');
 const { BackError } = require(`${__}/helpers/back.error`);
 const Models = require(`${__}/orm/models`);
 const shortid = require('shortid');
@@ -88,7 +87,7 @@ Gallery.getScreen = (req, res, next) => {
       res.render('screen', { screen, src: screen.path.replace('public', '') });
     };
 
-    if (screen.private === 1) {
+    if (screen.private === true) {
       if (req.user && req.user.id === screen.uploadBy) {
         return viewScreenShot();
       } else {
