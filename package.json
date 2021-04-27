@@ -35,7 +35,7 @@
     "express-mysql-session": "^2.1.0",
     "express-rate-limit": "^5.0.0",
     "express-session": "^1.16.2",
-    "express-validator": "^6.1.1",
+    "express-validator": "^6.5.0",
     "handlebars": "^4.7.3",
     "helmet": "^3.20.1",
     "http-errors": "~1.6.3",
